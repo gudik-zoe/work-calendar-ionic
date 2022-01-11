@@ -1,12 +1,15 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>calendar</ion-title>
-  </ion-toolbar>
-</ion-header>
+<!-- <app-header [title]="'Calendario'" [defaultHref]="'home'" [back]="false"></app-header> -->
 
 <ion-content>
   <ion-card>
-    <ion-calendar (change)="onChange($event)" [type]="type" [format]="'YYYY-MM-DD'">
-    </ion-calendar>
+    <ion-card-header>
+      <!-- <ion-calendar-week [weekStart]="1"></ion-calendar-week> -->
+    </ion-card-header>
+    <ion-card-content>
+
+      <ion-calendar (change)="onChange($event)" [format]="'YYYY-MM-DD'" style="background-color: lightgrey;">
+      </ion-calendar>
+    </ion-card-content>
   </ion-card>
+
 </ion-content>

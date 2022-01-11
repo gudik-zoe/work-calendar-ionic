@@ -8,6 +8,8 @@ import { CalendarPageRoutingModule } from './calendar-routing.module';
 
 import { CalendarPage } from './calendar.page';
 import { CalendarModule } from 'ion2-calendar';
+import { SharedComponentsModule } from 'src/app/shared/shared-components.module';
+import { DayComponent } from './day/day.component';
 
 @NgModule({
   imports: [
@@ -16,7 +18,8 @@ import { CalendarModule } from 'ion2-calendar';
     IonicModule,
     CalendarPageRoutingModule,
     CalendarModule,
+    SharedComponentsModule,
   ],
-  declarations: [CalendarPage],
+  declarations: [CalendarPage, DayComponent],
 })
 export class CalendarPageModule {}

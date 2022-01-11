@@ -1,22 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { CalendarPage } from './calendar.page';
-import { DayComponent } from './day/day.component';
+import { ClientPage } from './client.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: CalendarPage,
-  },
-  {
-    path: ':day',
-    component: DayComponent,
-  },
+    component: ClientPage
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class CalendarPageRoutingModule {}
+export class ClientPageRoutingModule {}

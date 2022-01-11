@@ -1,20 +1,19 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+<app-header [title]="'Home'" [defaultHref]="'home'" [back]="false" [color]="'primary'"></app-header>
+<ion-content>
+  <ion-tabs>
+    <ion-tab-bar slot="bottom" class="bar" color="primary">
+      <ion-tab-button tab="calendar" style="border: none;">
+        <ion-icon name="calendar"></ion-icon>
+        <ion-label>Calendar</ion-label>
+      </ion-tab-button>
+      <ion-tab-button tab="job-type" style="border: none;">
+        <ion-icon name="pricetags-outline"></ion-icon>
+        <ion-label>Commesse</ion-label>
+      </ion-tab-button>
+      <ion-tab-button tab="client" style="border: none;">
+        <ion-icon name="people"></ion-icon>
+        <ion-label>clienti</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
 </ion-content>

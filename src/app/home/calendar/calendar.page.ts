@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-calendar',
@@ -6,10 +7,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./calendar.page.scss'],
 })
 export class CalendarPage implements OnInit {
-  constructor() {}
-  onChange(data) {
-    console.log(data);
+  constructor(private router: Router) {}
+  onChange(date) {
+    this.router.navigate(['/home/calendar/', date]);
   }
-
+  theDay = 'monday';
   ngOnInit() {}
 }

@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>client</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-button (click)="addClient(2)">add client</ion-button>
+  <ion-grid *ngIf="clients">
+    <ion-row *ngFor="let client of clients">
+      <ion-col>
+        {{client.fullName}}
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

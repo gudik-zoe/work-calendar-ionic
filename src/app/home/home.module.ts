@@ -3,17 +3,19 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { HomePage } from './home.page';
-
+import { SuperTabsModule } from '@ionic-super-tabs/angular';
 import { HomePageRoutingModule } from './home-routing.module';
-
+import { SharedComponentsModule } from '../shared/shared-components.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    HomePageRoutingModule
+    HomePageRoutingModule,
+    SharedComponentsModule,
+    SuperTabsModule.forRoot(),
   ],
-  declarations: [HomePage]
+  declarations: [HomePage],
 })
 export class HomePageModule {}
