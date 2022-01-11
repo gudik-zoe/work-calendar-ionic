@@ -1,0 +1,7 @@
+{
+  "name": "work-calendar-ionic",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
