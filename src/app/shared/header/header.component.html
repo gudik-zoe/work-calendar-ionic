@@ -5,8 +5,8 @@
     </ion-buttons>
     <ion-title>{{title}}
     </ion-title>
-    <ion-buttons slot="end">
-      <ion-menu-button></ion-menu-button>
+    <ion-buttons slot="end" *ngIf="rightButton && rightButtonIcon">
+      <ion-icon [name]="rightButtonIcon" size="large" (click)="doActionInFather($event)"></ion-icon>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>

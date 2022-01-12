@@ -1,0 +1,5 @@
+<app-header [title]="'aggiungi-cliente'" [defaultHref]="'home'" [back]="false" [color]="'secondary'"
+  [rightButton]="true" [rightButtonIcon]="'close'" (rightButtonFunction)="close()"></app-header>
+<ion-content>
+  <app-add-client-form (confirmForm)="saveClient($event)" (cancel)="close()"></app-add-client-form>
+</ion-content>

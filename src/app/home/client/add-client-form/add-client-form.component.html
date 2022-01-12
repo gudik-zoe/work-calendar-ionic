@@ -1,0 +1,32 @@
+<ion-content>
+  <form [formGroup]="addClientForm">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">Nome Cliente</ion-label>
+              <ion-input type="text" name="clientName" placeholder="Mario Rossi" formControlName="clientName">
+              </ion-input>
+              <div lines="none" *ngIf="addClientForm.get('clientName').invalid &&
+            addClientForm.get('clientName').touched">
+                <p>please enter your first name</p>
+              </div>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-button color="primary" (click)="saveClient()" type="button" [disabled]="!addClientForm.valid">
+            salva
+          </ion-button>
+          <ion-button color="danger" (click)="close()" type="button">
+            cancella
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+
+</ion-content>
