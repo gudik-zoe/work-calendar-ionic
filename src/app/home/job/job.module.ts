@@ -4,10 +4,11 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { JobTypePageRoutingModule } from './job-type-routing.module';
+import { JobTypePageRoutingModule } from './job-routing.module';
 
-import { JobTypePage } from './job-type.page';
+import { JobPage } from './job.page';
 import { SharedComponentsModule } from 'src/app/shared/shared-components.module';
+import { AddJobModalComponent } from './add-job-modal/add-job-modal.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import { SharedComponentsModule } from 'src/app/shared/shared-components.module'
     JobTypePageRoutingModule,
     SharedComponentsModule,
   ],
-  declarations: [JobTypePage],
+  declarations: [JobPage, AddJobModalComponent],
 })
-export class JobTypePageModule {}
+export class JobPageModule {}

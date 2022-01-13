@@ -15,7 +15,6 @@ export class AddClientModalComponent implements OnInit {
   }
 
   saveClient(clientName: string) {
-    console.log('arriving here ' + clientName);
     this.modalCtrl.dismiss(
       {
         clientName,

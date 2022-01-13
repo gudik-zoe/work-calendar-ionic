@@ -17,9 +17,9 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'job-type',
+        path: 'job',
         loadChildren: () =>
-          import('./job-type/job-type.module').then((m) => m.JobTypePageModule),
+          import('./job/job.module').then((m) => m.JobPageModule),
       },
       {
         path: 'client',

@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { JobTypePage } from './job-type.page';
+import { JobPage } from './job.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: JobTypePage
-  }
+    component: JobPage,
+  },
 ];
 
 @NgModule({
