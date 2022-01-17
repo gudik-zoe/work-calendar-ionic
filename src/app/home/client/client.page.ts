@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { LoadingController, ModalController } from '@ionic/angular';
+import { UtilityService } from 'src/app/utility/utility.service';
 import { AddClientModalComponent } from './add-client-modal/add-client-modal.component';
 import { ClientService } from './client.service';
 
@@ -13,15 +14,25 @@ export class ClientPage implements OnInit {
   client;
   constructor(
     private clientService: ClientService,
-    private ModalCtrl: ModalController
+    private ModalCtrl: ModalController,
+    private utilityService: UtilityService,
+    private loaderCtrl: LoadingController
   ) {}
-  async getClients() {
-    try {
-      this.clients = await this.clientService.getClients();
-      console.log(this.clients);
-    } catch (err) {
-      console.log(err);
-    }
+  loading: boolean = false;
+
+  getClients() {
+    this.loaderCtrl.create().then(async (el) => {
+      el.present();
+      try {
+        this.clients = await this.clientService.getClients();
+        if (this.clients) {
+          el.dismiss();
+        }
+      } catch (err) {
+        el.dismiss();
+        console.log(err);
+      }
+    });
   }
 
   async addClient() {
@@ -33,23 +44,25 @@ export class ClientPage implements OnInit {
         })
         .then(async (result: any) => {
           if (result.role === 'confirm') {
-            try {
-              const theNewClient = await this.clientService.addClient({
-                fullName: result.data.clientName,
-              });
-              this.clients.push(theNewClient);
-            } catch (err) {
-              console.log(err);
-            }
+            this.loaderCtrl.create().then(async (el) => {
+              try {
+                const theNewClient = await this.clientService.addClient({
+                  fullName: result.data.clientName,
+                });
+                if (theNewClient) {
+                  this.utilityService.openToaster(
+                    'client aggiunto con sucesso'
+                  );
+                  this.clients.push(theNewClient);
+                }
+              } catch (err) {
+                console.log(err);
+              }
+            });
           } else {
             console.log('other thing');
           }
         });
-      // let client;
-      // this.client = await this.clientService.addClient(client);
-      // if (this.client) {
-      //   this.clients.push(this.client);
-      // }
     } catch (err) {
       console.log(err);
     }

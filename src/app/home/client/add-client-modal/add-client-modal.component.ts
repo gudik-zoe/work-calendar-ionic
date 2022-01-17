@@ -14,10 +14,10 @@ export class AddClientModalComponent implements OnInit {
     this.modalCtrl.dismiss();
   }
 
-  saveClient(clientName: string) {
+  saveClient(data: any) {
     this.modalCtrl.dismiss(
       {
-        clientName,
+        clientName: data.clientName,
       },
       'confirm'
     );

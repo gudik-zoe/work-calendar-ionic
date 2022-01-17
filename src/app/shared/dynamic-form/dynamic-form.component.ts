@@ -1,6 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { FormField } from 'src/app/models/formField';
+import { Validator } from 'src/app/models/validator';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -22,56 +28,23 @@ export class DynamicFormComponent implements OnInit {
     this.closeFormInFather.emit(null);
   }
 
-  fillFormFields() {
-    // if (this.formFields.length > 0) {
-    //   let FormObject= []
-    //     console.log(field);
-    //     this.dynamicForm = this.formbuilder.group({
-    //       field: [
-    //         field.initialValue,
-    //         [
-    //           field.validators.required ? Validators.required : null,
-    //           field.validators.minLength
-    //             ? Validators.minLength(field.validators.minLength)
-    //             : null,
-    //         ],
-    //       ],
-    //     });
-    // }
-  }
-  //   this.addClientForm = this.formbuilder.group({
-  //     clientName: ['', [Validators.required, Validators.minLength(3)]],
-  //   });
-  attempt() {
-    let array = [];
-    if (this.formFields.length > 0) {
-      let object = {};
-      for (let field of this.formFields) {
-        let theFieldName = field.fieldName;
-        let initialValue = field.initialValue;
-        let requiredValidator = field.validators.required;
-        let minLengthValidator = field.validators.minLength;
-        array.push({
-          theFieldName: [
-            initialValue,
-            [
-              requiredValidator ? Validators.required : null,
-              minLengthValidator
-                ? Validators.minLength(field.validators.minLength)
-                : null,
-            ],
-          ],
-        });
-      }
-      this.dynamicForm = this.formbuilder.group(
-        array.map((item) => {
-          return item;
-        })
+  toFormGroup() {
+    let formGroup = {};
+    for (let field of this.formFields) {
+      formGroup[field.fieldName] = new FormControl(
+        field.initialValue,
+        Validators.compose([
+          field.validators.required ? Validators.required : null,
+          field.validators.minLength > 0
+            ? Validators.minLength(field.validators.minLength)
+            : null,
+        ])
       );
     }
+    this.dynamicForm = new FormGroup(formGroup);
   }
 
   ngOnInit() {
-    this.attempt();
+    this.toFormGroup();
   }
 }

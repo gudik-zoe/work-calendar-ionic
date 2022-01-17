@@ -1,0 +1,37 @@
+<ion-content>
+  <form [formGroup]="dynamicForm">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-list *ngFor="let field of formFields">
+            <ion-item>
+              <ion-label position="floating">{{field.fieldName}}</ion-label>
+              <ion-input [type]="field.type" [name]="field.fieldName" [placeholder]="field.placeHolder"
+                [formControlName]="field.fieldName">
+              </ion-input>
+            </ion-item>
+            <small style="color: red;"
+              *ngIf="dynamicForm.get(field.fieldName).errors?.required && dynamicForm.get(field.fieldName).touched ">
+              this field is required
+            </small>
+            <small style="color: red;"
+              *ngIf="dynamicForm.get(field.fieldName).errors?.minLength && dynamicForm.get(field.fieldName).touched ">
+              should be at least {{field.validators.minLength}} characters
+            </small>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-button color="primary" (click)="submitForm()" type="button" [disabled]="!dynamicForm.valid">
+            salva
+          </ion-button>
+          <ion-button color="danger" (click)="close()" type="button">
+            cancella
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+
+</ion-content>

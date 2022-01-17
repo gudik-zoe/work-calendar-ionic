@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormField } from 'src/app/models/formField';
 
 @Component({
   selector: 'app-add-client-form',
@@ -7,25 +8,28 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./add-client-form.component.scss'],
 })
 export class AddClientFormComponent implements OnInit {
-  constructor(private formbuilder: FormBuilder) {}
-  addClientForm: FormGroup;
+  constructorr() {}
+  addClientFormFields: FormField[] = [
+    {
+      fieldName: 'clientName',
+      type: 'string',
+      initialValue: '',
+      placeHolder: 'Mario Rossi',
+      validators: {
+        required: true,
+        minLength: 3,
+      },
+    },
+  ];
   @Output() confirmForm = new EventEmitter();
   @Output() cancel = new EventEmitter();
 
-  fillAddClientForm() {
-    this.addClientForm = this.formbuilder.group({
-      clientName: ['', [Validators.required, Validators.minLength(3)]],
-    });
+  saveClient(data) {
+    this.confirmForm.emit(data);
   }
 
-  saveClient() {
-    this.confirmForm.emit(this.addClientForm.get('clientName').value);
+  close(data) {
+    this.cancel.emit(data);
   }
-
-  close() {
-    this.cancel.emit(false);
-  }
-  ngOnInit() {
-    this.fillAddClientForm();
-  }
+  ngOnInit() {}
 }
