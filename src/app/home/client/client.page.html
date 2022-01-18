@@ -1,8 +1,7 @@
 <app-header [title]="'Clienti'" [defaultHref]="'home'" [back]="false" [color]="'primary'" [rightButton]="true"
-  [rightButtonIcon]="'add'" (rightButtonFunction)="addClient()"></app-header>
+  [rightButtonIcon]="'add'" (rightButtonFunction)="openAddClientModal()"></app-header>
 
 <ion-content>
-  <!-- <ion-button (click)="addClient(2)">add client</ion-button> -->
   <ion-grid *ngIf="clients">
     <ion-row *ngFor="let client of clients">
       <ion-col>
@@ -10,8 +9,8 @@
           <ion-item color="warning">
             <ion-icon name="person" size="large" color="dark"></ion-icon>
             {{client.fullName}}
-            <ion-icon slot="end" name="pencil" size="medium"></ion-icon>
-            <ion-icon slot="end" name="trash" size="medium"></ion-icon>
+            <ion-icon slot="end" name="pencil" size="medium" (click)="editClient(client)"></ion-icon>
+            <ion-icon slot="end" name="trash" size="medium" (click)="deleteClient(client)"></ion-icon>
           </ion-item>
         </ion-list>
 

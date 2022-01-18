@@ -15,17 +15,17 @@ import { Validator } from 'src/app/models/validator';
 })
 export class DynamicFormComponent implements OnInit {
   @Input() formFields: FormField[];
-  @Output() submitFormInFather = new EventEmitter();
-  @Output() closeFormInFather = new EventEmitter();
+  @Output() submitForm = new EventEmitter();
+  @Output() closeForm = new EventEmitter();
   constructor(private formbuilder: FormBuilder) {}
   dynamicForm: FormGroup;
 
-  submitForm() {
-    this.submitFormInFather.emit(this.dynamicForm.value);
+  submit() {
+    this.submitForm.emit(this.dynamicForm.value);
   }
 
   close() {
-    this.closeFormInFather.emit(null);
+    this.closeForm.emit(null);
   }
 
   toFormGroup() {
@@ -45,6 +45,7 @@ export class DynamicFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.formFields);
     this.toFormGroup();
   }
 }

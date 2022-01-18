@@ -8,8 +8,6 @@ import { ClientPageRoutingModule } from './client-routing.module';
 
 import { ClientPage } from './client.page';
 import { SharedComponentsModule } from 'src/app/shared/shared-components.module';
-import { AddClientModalComponent } from './add-client-modal/add-client-modal.component';
-import { AddClientFormComponent } from './add-client-form/add-client-form.component';
 
 @NgModule({
   imports: [
@@ -20,6 +18,6 @@ import { AddClientFormComponent } from './add-client-form/add-client-form.compon
     ReactiveFormsModule,
     ClientPageRoutingModule,
   ],
-  declarations: [ClientPage, AddClientModalComponent, AddClientFormComponent],
+  declarations: [ClientPage],
 })
 export class ClientPageModule {}

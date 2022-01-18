@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { LoadingController, ModalController } from '@ionic/angular';
+import { AlertButton } from 'src/app/models/AlertButton';
+import { Client } from 'src/app/models/client';
+import { FormField } from 'src/app/models/formField';
+import { AddModalComponent } from 'src/app/shared/add-modal/add-modal.component';
 import { UtilityService } from 'src/app/utility/utility.service';
-import { AddClientModalComponent } from './add-client-modal/add-client-modal.component';
 import { ClientService } from './client.service';
 
 @Component({
@@ -11,7 +14,6 @@ import { ClientService } from './client.service';
 })
 export class ClientPage implements OnInit {
   clients: any;
-  client;
   constructor(
     private clientService: ClientService,
     private ModalCtrl: ModalController,
@@ -19,6 +21,19 @@ export class ClientPage implements OnInit {
     private loaderCtrl: LoadingController
   ) {}
   loading: boolean = false;
+
+  addClientFormFields: FormField[] = [
+    {
+      fieldName: 'clientName',
+      type: 'string',
+      initialValue: '',
+      placeHolder: 'Mario Rossi',
+      validators: {
+        required: true,
+        minLength: 3,
+      },
+    },
+  ];
 
   getClients() {
     this.loaderCtrl.create().then(async (el) => {
@@ -30,42 +45,82 @@ export class ClientPage implements OnInit {
         }
       } catch (err) {
         el.dismiss();
-        console.log(err);
+        this.utilityService.displayError(err, 'error fetching client', '');
       }
     });
   }
 
-  async addClient() {
+  async openAddClientModal() {
+    this.ModalCtrl.create({
+      component: AddModalComponent,
+      componentProps: {
+        header: 'aggiungi cliente',
+        content: this.addClientFormFields,
+      },
+    })
+      .then((modalEL) => {
+        modalEL.present();
+        return modalEL.onDidDismiss();
+      })
+      .then(async (result: any) => {
+        if (result.role === 'confirm') {
+          this.loaderCtrl.create().then(async (el) => {
+            this.addClient(new Client(result.data.client.clientName));
+          });
+        }
+      });
+  }
+
+  async addClient(client: Client) {
     try {
-      this.ModalCtrl.create({ component: AddClientModalComponent })
-        .then((modalEL) => {
-          modalEL.present();
-          return modalEL.onDidDismiss();
-        })
-        .then(async (result: any) => {
-          if (result.role === 'confirm') {
-            this.loaderCtrl.create().then(async (el) => {
-              try {
-                const theNewClient = await this.clientService.addClient({
-                  fullName: result.data.clientName,
-                });
-                if (theNewClient) {
-                  this.utilityService.openToaster(
-                    'client aggiunto con sucesso'
-                  );
-                  this.clients.push(theNewClient);
-                }
-              } catch (err) {
-                console.log(err);
-              }
-            });
-          } else {
-            console.log('other thing');
-          }
-        });
+      const theNewClient = await this.clientService.addClient(client);
+      if (theNewClient) {
+        this.utilityService.openToaster('client aggiunto con sucesso');
+        this.clients.push(theNewClient);
+      }
     } catch (err) {
-      console.log(err);
+      this.utilityService.displayError(err, 'error add client', '');
     }
+  }
+
+  deleteClient(client: Client) {
+    let buttonAndHandlers: AlertButton[] = [
+      { text: 'si', handler: async () => this.confirmDeleteClient(client.id) },
+      { text: 'cancella', handler: async () => {} },
+    ];
+    this.utilityService.dynamicAlert(
+      'cancella cliente',
+      'sei sicuro di voler cancellare il cliente ' + client.fullName,
+      buttonAndHandlers
+    );
+  }
+
+  confirmDeleteClient(id: number) {
+    this.loaderCtrl.create().then(async (el) => {
+      el.present();
+      try {
+        const deletedClient = await this.clientService.deleteClient(id);
+        if (deletedClient == null) {
+          this.clients = this.clients.filter((client) => client.id !== id);
+          this.utilityService.openToaster('client cancellato con sucesso');
+        }
+      } catch (err) {
+        this.utilityService.displayError(err, 'error deleting client', '');
+      } finally {
+        el.dismiss();
+      }
+    });
+  }
+
+  editClient(client: Client) {
+    let buttonAndHandlers: AlertButton[] = [
+      { text: 'ok', handler: async () => console.log('this is edit client ') },
+    ];
+    this.utilityService.dynamicAlert(
+      'alert header',
+      'alert message',
+      buttonAndHandlers
+    );
   }
 
   ngOnInit() {
