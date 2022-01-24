@@ -3,14 +3,16 @@
 
 <ion-content>
   <ion-card>
-    <ion-card-header>
-      <!-- <ion-calendar-week [weekStart]="1"></ion-calendar-week> -->
+    <!-- <ion-card-header>
     </ion-card-header>
     <ion-card-content>
 
       <ion-calendar (change)="onChange($event)" [format]="'YYYY-MM-DD'" style="background-color: lightgrey;">
       </ion-calendar>
-    </ion-card-content>
+    </ion-card-content> -->
+    <ion-datetime first-day-of-week="1" presentation="date" #popoverDatetime
+      (ionChange)="dateValue(formatDate(popoverDatetime.value))">
+    </ion-datetime>
   </ion-card>
 
 </ion-content>

@@ -19,7 +19,7 @@ export class JobPage implements OnInit {
     private loaderCtrl: LoadingController,
     private utilityService: UtilityService
   ) {}
-  jobs: Job[];
+  public jobs: Job[];
 
   addJobFormFields: FormField[] = [
     {
@@ -29,7 +29,7 @@ export class JobPage implements OnInit {
       placeHolder: 'lavoro 1',
       validators: {
         required: true,
-        minLength: 3,
+        minLength: 5,
       },
     },
   ];
@@ -85,21 +85,16 @@ export class JobPage implements OnInit {
   }
 
   confirmDeleteJob(id: number) {
-    console.log('entering confirm delete');
     this.loaderCtrl.create().then(async (el) => {
-      console.log('putting the loader');
       el.present();
       try {
-        console.log('entering the try');
         const deletedJob = await this.jobService.deleteJob(id);
-        console.log('finishing the chiamata');
         if (deletedJob == null) {
           el.dismiss();
           this.jobs = this.jobs.filter((job) => job.id !== id);
           this.utilityService.openToaster('job cancellato con sucesso');
         }
       } catch (err) {
-        console.log(err);
         el.dismiss();
         this.utilityService.displayError(err, 'error deleting job', '');
       }

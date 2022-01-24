@@ -31,15 +31,12 @@ export class DynamicFormComponent implements OnInit {
   toFormGroup() {
     let formGroup = {};
     for (let field of this.formFields) {
-      formGroup[field.fieldName] = new FormControl(
-        field.initialValue,
-        Validators.compose([
-          field.validators.required ? Validators.required : null,
-          field.validators.minLength > 0
-            ? Validators.minLength(field.validators.minLength)
-            : null,
-        ])
-      );
+      formGroup[field.fieldName] = new FormControl(field.initialValue, [
+        field.validators.required ? Validators.required : null,
+        field.validators.minLength > 0
+          ? Validators.minLength(field.validators.minLength)
+          : null,
+      ]);
     }
     this.dynamicForm = new FormGroup(formGroup);
   }

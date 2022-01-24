@@ -13,7 +13,7 @@ import { ClientService } from './client.service';
   styleUrls: ['./client.page.scss'],
 })
 export class ClientPage implements OnInit {
-  clients: any;
+  clients: Client[];
   constructor(
     private clientService: ClientService,
     private ModalCtrl: ModalController,
@@ -96,7 +96,6 @@ export class ClientPage implements OnInit {
       el.present();
       try {
         const deletedClient = await this.clientService.deleteClient(id);
-        console.log(deletedClient);
         if (deletedClient == null) {
           this.clients = this.clients.filter((client) => client.id !== id);
           this.utilityService.openToaster('client cancellato con sucesso');

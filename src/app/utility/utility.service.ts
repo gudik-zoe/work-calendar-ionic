@@ -15,7 +15,7 @@ export class UtilityService {
   ) {}
   errorMessage: string;
 
-  openToaster(message: string, duration: number = 2000, position: any = 'top') {
+  openToaster(message: string, duration: number = 1000, position: any = 'top') {
     this.toastCtrl.create({ message, duration, position }).then((elem) => {
       elem.present();
     });

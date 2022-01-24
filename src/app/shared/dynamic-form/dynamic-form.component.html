@@ -14,8 +14,7 @@
               *ngIf="dynamicForm.get(field.fieldName).errors?.required && dynamicForm.get(field.fieldName).touched ">
               this field is required
             </small>
-            <small style="color: red;"
-              *ngIf="dynamicForm.get(field.fieldName).errors?.minLength && dynamicForm.get(field.fieldName).touched ">
+            <small style="color: red;" *ngIf="dynamicForm.get(field.fieldName).errors?.minLength ">
               should be at least {{field.validators.minLength}} characters
             </small>
           </ion-list>

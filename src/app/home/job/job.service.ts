@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 export class JobService {
   constructor(private http: HttpClient) {}
   rootUrl: string = environment.rootUrl + 'job/';
-
+  jobs: Job[];
   public getJobs() {
     return this.http.get<Job[]>(this.rootUrl).toPromise();
   }
