@@ -17,7 +17,7 @@ export class DynamicFormComponent implements OnInit {
   @Input() formFields: FormField[];
   @Output() submitForm = new EventEmitter();
   @Output() closeForm = new EventEmitter();
-  constructor(private formbuilder: FormBuilder) {}
+  constructor() {}
   dynamicForm: FormGroup;
 
   submit() {
@@ -45,7 +45,6 @@ export class DynamicFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.formFields);
     this.toFormGroup();
   }
 }

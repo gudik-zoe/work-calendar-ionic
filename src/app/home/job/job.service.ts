@@ -16,4 +16,8 @@ export class JobService {
   public addJob(job: Job) {
     return this.http.post<Job>(this.rootUrl, job).toPromise();
   }
+  public deleteJob(id: number) {
+    console.log('deleting the job ' + id);
+    return this.http.delete(this.rootUrl + id).toPromise();
+  }
 }

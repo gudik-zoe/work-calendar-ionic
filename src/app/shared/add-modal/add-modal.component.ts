@@ -18,7 +18,7 @@ export class AddModalComponent implements OnInit {
   save(data) {
     this.modalCtrl.dismiss(
       {
-        client: data,
+        formValue: data,
       },
       'confirm'
     );

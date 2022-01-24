@@ -8,7 +8,6 @@ import { JobTypePageRoutingModule } from './job-routing.module';
 
 import { JobPage } from './job.page';
 import { SharedComponentsModule } from 'src/app/shared/shared-components.module';
-import { AddJobModalComponent } from './add-job-modal/add-job-modal.component';
 
 @NgModule({
   imports: [
@@ -18,6 +17,6 @@ import { AddJobModalComponent } from './add-job-modal/add-job-modal.component';
     JobTypePageRoutingModule,
     SharedComponentsModule,
   ],
-  declarations: [JobPage, AddJobModalComponent],
+  declarations: [JobPage],
 })
 export class JobPageModule {}

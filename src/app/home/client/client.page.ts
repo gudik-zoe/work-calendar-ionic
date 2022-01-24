@@ -40,12 +40,10 @@ export class ClientPage implements OnInit {
       el.present();
       try {
         this.clients = await this.clientService.getClients();
-        if (this.clients) {
-          el.dismiss();
-        }
       } catch (err) {
-        el.dismiss();
         this.utilityService.displayError(err, 'error fetching client', '');
+      } finally {
+        el.dismiss();
       }
     });
   }
@@ -65,7 +63,7 @@ export class ClientPage implements OnInit {
       .then(async (result: any) => {
         if (result.role === 'confirm') {
           this.loaderCtrl.create().then(async (el) => {
-            this.addClient(new Client(result.data.client.clientName));
+            this.addClient(new Client(result.data.formValue.clientName));
           });
         }
       });
@@ -74,10 +72,8 @@ export class ClientPage implements OnInit {
   async addClient(client: Client) {
     try {
       const theNewClient = await this.clientService.addClient(client);
-      if (theNewClient) {
-        this.utilityService.openToaster('client aggiunto con sucesso');
-        this.clients.push(theNewClient);
-      }
+      this.utilityService.openToaster('client aggiunto con sucesso');
+      this.clients.push(theNewClient);
     } catch (err) {
       this.utilityService.displayError(err, 'error add client', '');
     }
@@ -100,6 +96,7 @@ export class ClientPage implements OnInit {
       el.present();
       try {
         const deletedClient = await this.clientService.deleteClient(id);
+        console.log(deletedClient);
         if (deletedClient == null) {
           this.clients = this.clients.filter((client) => client.id !== id);
           this.utilityService.openToaster('client cancellato con sucesso');

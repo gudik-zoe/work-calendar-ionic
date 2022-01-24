@@ -1,16 +1,16 @@
 <app-header [title]="'Commesse'" [defaultHref]="'home'" [back]="false" [color]="'primary'" [rightButton]="true"
-  [rightButtonIcon]="'add'" (rightButtonFunction)="addJobType()"></app-header>
+  [rightButtonIcon]="'add'" (rightButtonFunction)="addJobModal()"></app-header>
 
 <ion-content>
-  <ion-grid *ngIf="myJobs">
-    <ion-row *ngFor="let job of myJobs">
+  <ion-grid *ngIf="jobs">
+    <ion-row *ngFor="let job of jobs">
       <ion-col>
         <ion-list>
           <ion-item color="warning">
             <ion-icon name="build" size="large" color="dark"></ion-icon>
             {{job.description}}
-            <ion-icon slot="end" name="pencil" size="medium"></ion-icon>
-            <ion-icon slot="end" name="trash" size="medium"></ion-icon>
+            <ion-icon slot="end" name="pencil" size="medium" (click)="editJob(job)"></ion-icon>
+            <ion-icon slot="end" name="trash" size="medium" (click)="deleteJob(job)"></ion-icon>
           </ion-item>
         </ion-list>
 
