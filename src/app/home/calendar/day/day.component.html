@@ -1,4 +1,5 @@
-<app-header [title]="calendarDate" [defaultHref]="'home/calendar'" [back]="true" *ngIf="day" [color]="'secondary'">
+<app-header [title]="clickedDate" [defaultHref]="'home/calendar'" [back]="true" *ngIf="clickedDate"
+  [color]="'secondary'">
 </app-header>
 <ion-content>
 
@@ -15,6 +16,32 @@
       <ion-select-option *ngFor="let job of jobs">{{job.description}}</ion-select-option>
     </ion-select>
   </ion-item>
+
+
+  <ion-item button="true" id="open-initiationTime-input">
+    <ion-label>ora inizio</ion-label>
+    <ion-text slot="end" *ngIf="startTime">{{ startTime }}</ion-text>
+    <ion-popover trigger="open-initiationTime-input" show-backdrop="false">
+      <ng-template>
+        <ion-datetime mode="ios" #startTime presentation="time" cancelText="cancel" locale="en-GB-u-hc-h23"
+          (ionChange)="formatStartDate(startTime.value)">
+        </ion-datetime>
+      </ng-template>
+    </ion-popover>
+  </ion-item>
+
+  <ion-item button="true" id="open-endTime-input">
+    <ion-label>ora Fine</ion-label>
+    <ion-text slot="end" *ngIf="endTime">{{ endTime }}</ion-text>
+    <ion-popover trigger="open-endTime-input" show-backdrop="false">
+      <ng-template>
+        <ion-datetime mode="ios" presentation="time" #endTime locale="it-GB-u-hc-h23"
+          (ionChange)="formatEndDate(endTime.value)" doneText="done">
+        </ion-datetime>
+      </ng-template>
+    </ion-popover>
+  </ion-item>
+
 
 
 </ion-content>

@@ -9,12 +9,10 @@ import { format, parseISO } from 'date-fns';
 })
 export class CalendarPage implements OnInit {
   constructor(private router: Router) {}
-  onChange(date) {
+
+  dateValue(data: string) {
+    const date = this.formatDate(data);
     this.router.navigate(['/home/calendar/', date]);
-  }
-  theDay = 'monday';
-  dateValue(data) {
-    console.log(data);
   }
 
   formatDate(value: string) {

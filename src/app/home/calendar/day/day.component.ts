@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { format, parseISO } from 'date-fns';
 import { Client } from 'src/app/models/client';
 import { Job } from 'src/app/models/job';
 import { UtilityService } from 'src/app/utility/utility.service';
@@ -20,22 +21,12 @@ export class DayComponent implements OnInit {
     private jobService: JobService,
     private clientService: ClientService
   ) {}
-  date: Date;
-  day: string;
-  month: string;
-  dayDate: number;
-  calendarDate: string;
-  hours = [];
+
   jobs: Job[];
   clients: Client[];
-
-  getDateDetails(date: Date) {
-    this.day = this.dayService.getDayFromDate(date.getDay());
-    this.dayDate = date.getDate();
-    this.month = this.dayService.getMonthFromDate(date.getMonth());
-    this.calendarDate =
-      this.day.slice(0, 3) + ' ' + this.dayDate + ' ' + this.month.slice(0, 3);
-  }
+  startTime: string;
+  endTime: string;
+  clickedDate: string;
 
   async getMyJobs() {
     try {
@@ -52,17 +43,18 @@ export class DayComponent implements OnInit {
       this.utilityService.displayError(err, 'error fetching client', '');
     }
   }
-  ngOnInit() {
-    for (let i = 1; i <= 24; i++) {
-      if (i < 12) {
-        this.hours.push(i + ' am');
-      } else {
-        this.hours.push(i - 12 + ' pm');
-      }
-    }
 
+  formatStartDate(data: string) {
+    this.startTime = format(parseISO(data), 'HH:mm');
+  }
+
+  formatEndDate(data: string) {
+    this.endTime = format(parseISO(data), 'HH:mm');
+  }
+
+  ngOnInit() {
     this.activatedRoute.params.subscribe((data) => {
-      this.getDateDetails(new Date(data.day));
+      this.clickedDate = data.day;
     });
     this.getClients();
     this.getMyJobs();
