@@ -16,7 +16,6 @@ import { DayService } from './day.service';
 export class DayComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
-    private dayService: DayService,
     private utilityService: UtilityService,
     private jobService: JobService,
     private clientService: ClientService
@@ -51,6 +50,8 @@ export class DayComponent implements OnInit {
   formatEndDate(data: string) {
     this.endTime = format(parseISO(data), 'HH:mm');
   }
+
+  saveClientJob() {}
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((data) => {
