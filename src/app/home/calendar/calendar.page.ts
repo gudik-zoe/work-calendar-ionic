@@ -11,8 +11,8 @@ export class CalendarPage implements OnInit {
   constructor(private router: Router) {}
 
   dateValue(data: string) {
-    const date = this.formatDate(data);
-    this.router.navigate(['/home/calendar/', date]);
+    // const date = this.formatDate(data);
+    this.router.navigate(['/home/calendar/', data]);
   }
 
   formatDate(value: string) {

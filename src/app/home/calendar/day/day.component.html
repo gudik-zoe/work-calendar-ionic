@@ -1,59 +1,6 @@
-<app-header [title]="clickedDate" [defaultHref]="'home/calendar'" [back]="true" *ngIf="clickedDate" [color]="'primary'">
+<app-header [title]="clickedDate" [defaultHref]="'home/calendar'" [back]="true" *ngIf="clickedDate" [color]="'primary'"
+  [rightButton]="true" [rightButtonIcon]="'add'" (rightButtonFunction)="openAddBusinessModal()">
 </app-header>
 <ion-content color="secondary">
-
-
-  <ion-item color="tertiary">
-    <ion-label>
-      <ion-icon name="person" color="light"></ion-icon>Client
-    </ion-label>
-    <ion-select>
-      <ion-select-option *ngFor="let client of clients">{{client.fullName}}</ion-select-option>
-    </ion-select>
-  </ion-item>
-
-  <ion-item color="tertiary">
-    <ion-label>
-      <ion-icon name="build" color="light"></ion-icon> Commessa
-    </ion-label>
-    <ion-select value="brown" okText="Okay" cancelText="cancel">
-      <ion-select-option *ngFor="let job of jobs">{{job.description}}</ion-select-option>
-    </ion-select>
-  </ion-item>
-
-
-  <ion-item color="tertiary" button="true" id="open-initiationTime-input">
-    <ion-label>
-      <ion-icon name="time" color="light"></ion-icon>ora inizio
-    </ion-label>
-    <ion-text slot="end" *ngIf="startTime">{{ startTime }}</ion-text>
-    <ion-popover trigger="open-initiationTime-input" show-backdrop="false">
-      <ng-template>
-        <ion-datetime mode="ios" #startTime presentation="time" cancelText="cancel" locale="en-GB-u-hc-h23"
-          (ionChange)="formatStartDate(startTime.value)">
-        </ion-datetime>
-      </ng-template>
-    </ion-popover>
-  </ion-item>
-
-  <ion-item color="primary" button="true" id="open-endTime-input">
-    <ion-label>
-      <ion-icon name="time" color="light"></ion-icon>ora Fine
-    </ion-label>
-    <ion-text slot="end" *ngIf="endTime">{{ endTime }}</ion-text>
-    <ion-popover trigger="open-endTime-input" show-backdrop="false">
-      <ng-template>
-        <ion-datetime mode="ios" presentation="time" #endTime locale="it-GB-u-hc-h23"
-          (ionChange)="formatEndDate(endTime.value)" doneText="done">
-        </ion-datetime>
-      </ng-template>
-    </ion-popover>
-  </ion-item>
-  <ion-item>
-    <ion-label position="floating">Note</ion-label>
-    <ion-textarea></ion-textarea>
-  </ion-item>
-
-  <ion-button color="primary" (click)="saveClientJob()" expand="block">Salva</ion-button>
 
 </ion-content>

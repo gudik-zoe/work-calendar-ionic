@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
@@ -10,6 +10,7 @@ import { CalendarPage } from './calendar.page';
 import { CalendarModule } from 'ion2-calendar';
 import { SharedComponentsModule } from 'src/app/shared/shared-components.module';
 import { DayComponent } from './day/day.component';
+import { AddBusinessComponent } from './add-business/add-business.component';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { DayComponent } from './day/day.component';
     CalendarPageRoutingModule,
     CalendarModule,
     SharedComponentsModule,
+    ReactiveFormsModule,
   ],
-  declarations: [CalendarPage, DayComponent],
+  declarations: [CalendarPage, DayComponent, AddBusinessComponent],
 })
 export class CalendarPageModule {}
