@@ -16,7 +16,7 @@ export class CalendarPage implements OnInit {
   }
 
   formatDate(value: string) {
-    return format(parseISO(value), 'MMM dd yyyy');
+    return format(parseISO(value), 'yyyy-MM-dd HH:mm:ss.ssssss');
   }
   ngOnInit() {}
 }
