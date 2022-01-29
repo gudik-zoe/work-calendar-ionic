@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+import { IonItem, LoadingController, ModalController } from '@ionic/angular';
 import { format, parseISO } from 'date-fns';
+import { Business } from 'src/app/models/business';
 import { Client } from 'src/app/models/client';
 import { Job } from 'src/app/models/job';
 import { SummaryFilters } from 'src/app/models/summaryFilter';
@@ -25,8 +26,9 @@ export class DayComponent implements OnInit {
     private jobService: JobService,
     private clientService: ClientService,
     private modalCtrl: ModalController,
-    private summaryService: SummaryService
-  ) {}
+    private summaryService: SummaryService,
+    private loaderCtrl: LoadingController
+  ) { }
   jobs: Job[];
   clients: Client[];
   startTime: string;
@@ -68,12 +70,30 @@ export class DayComponent implements OnInit {
       .then(async (result: any) => {
         if (result.role === 'confirm') {
           result.data.formValue.date = this.fullDate;
-          console.log(result.data.formValue);
-          // this.loaderCtrl.create().then(async (el) => {
-          //   this.addClient(new Client(result.data.formValue.clientName));
-          // });
+          this.loaderCtrl.create().then(async (el) => {
+            this.createBusiness(result.data.formValue);
+          });
         }
       });
+  }
+  async createBusiness(businessForm) {
+    console.log(businessForm.client)
+    console.log(this.clients.find(client => client.fullName == businessForm.client))
+    let business = new Business();
+    business.clientId = this.clients.find(client => client.fullName == businessForm.client).id
+    business.jobId = this.jobs.find(job => job.description == businessForm.job).id
+    business.date = this.fullDate
+    business.startDate = businessForm.startTime
+    business.endDate = businessForm.endTime
+    business.note = businessForm.note
+    business.position = businessForm.position
+    try {
+      const newBusiness = await this.summaryService.createBusiness(business)
+      console.log(newBusiness)
+    } catch (err) {
+      this.utilityService.displayError(err)
+    }
+
   }
 
   async getSummary() {
@@ -81,10 +101,12 @@ export class DayComponent implements OnInit {
     summaryFilters.clientId = 2;
     summaryFilters.startDate = null;
     summaryFilters.endDate = null;
+    summaryFilters.date = null
     try {
       const result = await this.summaryService.getBusinessSummary(
         summaryFilters
       );
+      console.log(result)
     } catch (err) {
       console.log(err);
       this.utilityService.displayError(err);
