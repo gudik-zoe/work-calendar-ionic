@@ -12,7 +12,9 @@ import { UtilityService } from 'src/app/utility/utility.service';
 import { ClientService } from '../../client/client.service';
 import { JobService } from '../../job/job.service';
 import { AddBusinessComponent } from '../add-business/add-business.component';
-import { SummaryService } from './summary.service';
+import { SummaryService } from '../../summary/summary.service';
+import { BusinessService } from '../business.service';
+import { BusinessList } from 'src/app/models/businessList';
 
 @Component({
   selector: 'app-day',
@@ -26,17 +28,18 @@ export class DayComponent implements OnInit {
     private jobService: JobService,
     private clientService: ClientService,
     private modalCtrl: ModalController,
-    private summaryService: SummaryService,
+    private businessService: BusinessService,
     private loaderCtrl: LoadingController
-  ) { }
+  ) {}
   jobs: Job[];
   clients: Client[];
   startTime: string;
   endTime: string;
   clickedDate: string;
   fullDate: string;
+  businessList: BusinessList;
 
-  async getMyJobs() {
+  private async getMyJobs() {
     try {
       this.jobs = await this.jobService.getJobs();
     } catch (err) {
@@ -44,7 +47,7 @@ export class DayComponent implements OnInit {
     }
   }
 
-  async getClients() {
+  private async getClients() {
     try {
       this.clients = await this.clientService.getClients();
     } catch (err) {
@@ -52,7 +55,18 @@ export class DayComponent implements OnInit {
     }
   }
 
-  openAddBusinessModal() {
+  private async getBusinessOnDate() {
+    try {
+      this.businessList = await this.businessService.getBusinessInDate(
+        this.fullDate
+      );
+      console.log(this.businessList);
+    } catch (err) {
+      this.utilityService.displayError(err);
+    }
+  }
+
+  private openAddBusinessModal() {
     this.modalCtrl
       .create({
         component: AddBusinessComponent,
@@ -76,39 +90,22 @@ export class DayComponent implements OnInit {
         }
       });
   }
-  async createBusiness(businessForm) {
-    console.log(businessForm.client)
-    console.log(this.clients.find(client => client.fullName == businessForm.client))
+  private async createBusiness(businessForm) {
     let business = new Business();
-    business.clientId = this.clients.find(client => client.fullName == businessForm.client).id
-    business.jobId = this.jobs.find(job => job.description == businessForm.job).id
-    business.date = this.fullDate
-    business.startDate = businessForm.startTime
-    business.endDate = businessForm.endTime
-    business.note = businessForm.note
-    business.position = businessForm.position
+    business.clientId = this.clients.find(
+      (client) => client.fullName == businessForm.client
+    ).id;
+    business.jobId = this.jobs.find(
+      (job) => job.description == businessForm.job
+    ).id;
+    business.date = this.fullDate;
+    business.startDate = businessForm.startTime;
+    business.endDate = businessForm.endTime;
+    business.note = businessForm.note;
+    business.position = businessForm.position;
     try {
-      const newBusiness = await this.summaryService.createBusiness(business)
-      console.log(newBusiness)
+      const newBusiness = await this.businessService.createBusiness(business);
     } catch (err) {
-      this.utilityService.displayError(err)
-    }
-
-  }
-
-  async getSummary() {
-    let summaryFilters = new SummaryFilters();
-    summaryFilters.clientId = 2;
-    summaryFilters.startDate = null;
-    summaryFilters.endDate = null;
-    summaryFilters.date = null
-    try {
-      const result = await this.summaryService.getBusinessSummary(
-        summaryFilters
-      );
-      console.log(result)
-    } catch (err) {
-      console.log(err);
       this.utilityService.displayError(err);
     }
   }
@@ -120,6 +117,6 @@ export class DayComponent implements OnInit {
     });
     this.getClients();
     this.getMyJobs();
-    this.getSummary();
+    this.getBusinessOnDate();
   }
 }

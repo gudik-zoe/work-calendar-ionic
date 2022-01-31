@@ -1,0 +1,70 @@
+<app-header [title]="'Riepilogo'" [defaultHref]="'home'" [back]="false" [color]="'primary'" [rightButton]="false"
+  [rightButtonIcon]="''"></app-header>
+
+<ion-content>
+  <ion-header>
+    scegli i parametri a base dei cui vuoi avere il riepilogo
+  </ion-header>
+
+  <form [formGroup]="summaryForm">
+    <ion-item color="tertiary">
+      <ion-label>
+        <ion-icon name="person" color="light"></ion-icon>Client
+      </ion-label>
+      <ion-select formControlName="client">
+        <ion-select-option *ngFor="let client of clients">{{client.fullName}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item color="tertiary">
+      <ion-label>
+        <ion-icon name="build" color="light"></ion-icon> Commessa
+      </ion-label>
+      <ion-select value="brown" formControlName="job">
+        <ion-select-option *ngFor="let job of jobs">{{job.description}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+
+    <ion-item color="tertiary" button="true" id="open-initiationTime-input">
+      <ion-label>
+        <ion-icon name="time" color="light"></ion-icon>dalla data
+      </ion-label>
+      <ion-text slot="end" *ngIf="startDate">{{ startDate }}</ion-text>
+      <ion-popover trigger="open-initiationTime-input" show-backdrop="false">
+        <ng-template>
+          <ion-datetime mode="ios" #startDate presentation="date" cancelText="cancel" locale="en-GB-u-hc-h23"
+            (ionChange)="formatStartDate(startDate.value)" formControlName="startDate">
+          </ion-datetime>
+        </ng-template>
+      </ion-popover>
+    </ion-item>
+
+    <ion-item color="primary" button="true" id="open-endTime-input">
+      <ion-label>
+        <ion-icon name="time" color="light"></ion-icon>alla data
+      </ion-label>
+      <ion-text slot="end" *ngIf="endDate">{{ endDate }}</ion-text>
+      <ion-popover trigger="open-endTime-input" show-backdrop="false">
+        <ng-template>
+          <ion-datetime mode="ios" presentation="date" #endDate locale="it-GB-u-hc-h23"
+            (ionChange)="formatEndDate(endDate.value)" formControlName="endDate">
+          </ion-datetime>
+        </ng-template>
+      </ion-popover>
+    </ion-item>
+
+    <ion-button color="primary" (click)="submit()" expand="block">cerca</ion-button>
+  </form>
+
+  <div *ngIf="base64">
+    <ion-button (click)="downloadPdf()">scarica</ion-button>
+  </div>
+
+
+  <div *ngIf="!base64">
+    non ci sono business per quella ricerca
+  </div>
+
+</ion-content>

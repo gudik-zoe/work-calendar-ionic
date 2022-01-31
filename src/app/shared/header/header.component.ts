@@ -18,7 +18,6 @@ export class HeaderComponent implements OnInit {
   constructor() {}
 
   doActionInFather(data) {
-    console.log('add client in child');
     this.rightButtonFunction.emit(data);
   }
 

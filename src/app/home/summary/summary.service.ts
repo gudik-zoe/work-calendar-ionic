@@ -9,22 +9,20 @@ import { environment } from 'src/environments/environment';
 })
 export class SummaryService {
   rootUrl: string = environment.rootUrl + 'business/';
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   public getBusinessSummary(filters: SummaryFilters) {
     let queryParams = new HttpParams();
     for (let filter in filters) {
       if (filters[filter]) {
-        console.log("inserting filter " + filter.toString() + " " + filters[filter])
+        console.log(
+          'inserting filter ' + filter.toString() + ' ' + filters[filter]
+        );
         queryParams = queryParams.append(filter.toString(), filters[filter]);
       }
     }
     return this.http
       .get(this.rootUrl + 'summary', { params: queryParams })
       .toPromise();
-  }
-
-  public createBusiness(business: Business) {
-    return this.http.post(this.rootUrl, business).toPromise();
   }
 }
