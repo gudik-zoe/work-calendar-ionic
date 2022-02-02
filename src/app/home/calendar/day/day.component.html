@@ -5,23 +5,22 @@
 
   <ion-grid *ngIf="businessList">
     <ion-row *ngFor="let business of businessList.resultList">
-      <ion-col>
-        <ion-list>
-          <ion-item color="warning">
-            Job: {{business.jobDescription}}
-            client: {{business.clientFullName}}
-            <ion-icon slot="end" name="pencil" size="medium"></ion-icon>
-            <ion-icon slot="end" name="trash" size="medium"></ion-icon>
-          </ion-item>
-        </ion-list>
+
+      <ion-col style="margin: 5px 0px 0px 5px;">
+        <small>dalle :{{business.startTime | date:'shortTime'}}</small>
+        <ion-item color="warning">
+          Job: {{business.jobDescription}}
+          client: {{business.clientFullName}}
+          <ion-icon slot="end" name="pencil" size="medium"></ion-icon>
+          <ion-icon slot="end" name="trash" size="medium"></ion-icon>
+        </ion-item>
+        <small>alle: {{business.endTime | date:'shortTime'}}</small>
 
       </ion-col>
+
+
+
     </ion-row>
   </ion-grid>
-  <ion-content *ngIf="businessList && !businessList.total">
-    non ci sono business in questo giorno
-  </ion-content>
-
-
 
 </ion-content>

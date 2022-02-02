@@ -16,7 +16,7 @@
 @import "~@ionic/angular/css/normalize.css";
 @import "~@ionic/angular/css/structure.css";
 @import "~@ionic/angular/css/typography.css";
-@import '~@ionic/angular/css/display.css';
+@import "~@ionic/angular/css/display.css";
 
 /* Optional CSS utils that can be commented out */
 @import "~@ionic/angular/css/padding.css";
@@ -24,3 +24,38 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+.transparent-modal {
+  --background: #0000005c;
+
+  &::part(content) {
+    backdrop-filter: blur(12px);
+  }
+
+  ion-content {
+    --background: transparent;
+  }
+}
+
+.small-modal {
+  --background: #0000005c;
+
+  &::part(content) {
+    backdrop-filter: blur(12px);
+    width: 90%;
+    height: 50%;
+    margin: auto;
+    border-radius: 8px;
+  }
+  ion-content {
+    --background: transparent;
+  }
+}
+
+.my-class {
+  height: 50% !important;
+  margin: 0% 5% 0% 5%;
+  border-radius: 10px;
+  width: 90% !important;
+  transform: translateY(100%);
+}

@@ -4,8 +4,9 @@ export class Business {
   public clientFullName: string;
   public jobDescription: string;
   public date: string;
-  public startDate: string;
-  public endDate: string;
+  public startTime: string;
+  public endTime: string;
   public note: string;
   public position: string;
+  public timeInHours?: string;
 }

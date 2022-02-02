@@ -1,0 +1,13 @@
+<app-header [title]="title" [rightButton]="false" color="warning" [back]="false" [rightButton]="true"
+  [rightButtonIcon]="'close'" (rightButtonFunction)="dismiss()"></app-header>
+<ion-content color="secondary">
+  <ion-list>
+    <ion-searchbar (ionChange)="FilterItems()" debounce="500" [(ngModel)]="searchText"
+      [placeholder]="searchPlaceHolder">
+    </ion-searchbar>
+    <ion-item *ngFor="let item of filteredItems; let i = index">
+      <ion-label>{{item}}</ion-label>
+      <ion-radio [value]="item" (ionFocus)="selectValue(item)"></ion-radio>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -5,7 +5,7 @@ ion-icon {
 }
 
 ion-item {
-  margin: 10px 10px 10px 10px;
+  margin: 10px 0px 10px 0px;
   border: 0.5px;
   border-radius: 8px;
 }
@@ -13,4 +13,8 @@ ion-item {
 ion-label {
   font-size: xx-large;
   font-weight: bolder;
+}
+
+small {
+  color: black;
 }

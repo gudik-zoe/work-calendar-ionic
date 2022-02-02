@@ -15,6 +15,7 @@ import { AddBusinessComponent } from '../add-business/add-business.component';
 import { SummaryService } from '../../summary/summary.service';
 import { BusinessService } from '../business.service';
 import { BusinessList } from 'src/app/models/businessList';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-day',
@@ -38,6 +39,32 @@ export class DayComponent implements OnInit {
   clickedDate: string;
   fullDate: string;
   businessList: BusinessList;
+  hours: String[] = [
+    '8 AM',
+    '9 AM',
+    '10 AM',
+    '11 AM',
+    '12 PM',
+    '1 PM',
+    '2 PM',
+    '3 PM',
+    '4 PM',
+    '5 PM',
+    '6 PM',
+    '7 PM',
+    '8 PM',
+    '9 PM',
+    '10 PM',
+    '11 PM',
+    '12 AM',
+    '1 AM',
+    '2 AM',
+    '3 AM',
+    '4 AM',
+    '5 AM',
+    '6 AM',
+    '7 AM',
+  ];
 
   private async getMyJobs() {
     try {
@@ -60,11 +87,22 @@ export class DayComponent implements OnInit {
       this.businessList = await this.businessService.getBusinessInDate(
         this.fullDate
       );
-      console.log(this.businessList);
     } catch (err) {
       this.utilityService.displayError(err);
     }
   }
+
+  // getHourFromDate(array) {
+  //   for (let business of array) {
+  //     console.log(business.date);
+
+  //     console.log(
+  //       parseISO(business.date).getHours() - 1 > 12
+  //         ? parseISO(business.date).getHours() - 12 + ' pm'
+  //         : parseISO(business.date).getHours() - 1 + ' am'
+  //     );
+  //   }
+  // }
 
   private openAddBusinessModal() {
     this.modalCtrl
@@ -93,18 +131,19 @@ export class DayComponent implements OnInit {
   private async createBusiness(businessForm) {
     let business = new Business();
     business.clientId = this.clients.find(
-      (client) => client.fullName == businessForm.client
+      (client) => client.fullName.trim() == businessForm.client.trim()
     ).id;
     business.jobId = this.jobs.find(
       (job) => job.description == businessForm.job
     ).id;
     business.date = this.fullDate;
-    business.startDate = businessForm.startTime;
-    business.endDate = businessForm.endTime;
+    business.startTime = businessForm.startTime;
+    business.endTime = businessForm.endTime;
     business.note = businessForm.note;
     business.position = businessForm.position;
     try {
       const newBusiness = await this.businessService.createBusiness(business);
+      this.businessList.resultList.push(newBusiness);
     } catch (err) {
       this.utilityService.displayError(err);
     }
