@@ -33,6 +33,16 @@ export class ClientPage implements OnInit {
         minLength: 3,
       },
     },
+    {
+      fieldName: 'colore',
+      type: 'string',
+      initialValue: '',
+      placeHolder: '',
+      validators: {
+        required: false,
+        minLength: 1,
+      },
+    },
   ];
 
   getClients() {
@@ -96,11 +106,10 @@ export class ClientPage implements OnInit {
       el.present();
       try {
         const deletedClient = await this.clientService.deleteClient(id);
-        if (deletedClient == null) {
-          this.clients = this.clients.filter((client) => client.id !== id);
-          this.utilityService.openToaster('client cancellato con sucesso');
-        }
+        this.clients = this.clients.filter((client) => client.id !== id);
+        this.utilityService.openToaster('client cancellato con sucesso');
       } catch (err) {
+        console.log('arrived here');
         this.utilityService.displayError(err, 'error deleting client', '');
       } finally {
         el.dismiss();

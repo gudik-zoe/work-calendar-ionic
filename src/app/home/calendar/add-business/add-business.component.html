@@ -63,7 +63,7 @@
       <ion-textarea type="text" formControlName="position"></ion-textarea>
     </ion-item>
 
-    <ion-button color="primary" (click)="submit()" expand="block">Salva
+    <ion-button color="primary" (click)="submit()" expand="block" [disabled]="!createBusinessForm.valid">Salva
     </ion-button>
   </form>
 </ion-content>

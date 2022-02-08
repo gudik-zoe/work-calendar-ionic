@@ -1,4 +1,5 @@
 export class Business {
+  public businessId: number;
   public clientId: number;
   public jobId: number;
   public clientFullName: string;

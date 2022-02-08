@@ -11,6 +11,7 @@ import { parseISO } from 'date-fns';
 export class BusinessService {
   rootUrl: string = environment.rootUrl + 'business/';
   constructor(private http: HttpClient) {}
+  businessList: Business[];
 
   public getBusinessInDate(date: string) {
     return this.http
@@ -38,5 +39,26 @@ export class BusinessService {
 
   public createBusiness(business: Business) {
     return this.http.post<Business>(this.rootUrl, business).toPromise();
+  }
+
+  getBusinessById(businessId: number) {
+    let business = null;
+    return new Promise<Business>(async (res, rej) => {
+      if (this.businessList && this.businessList.length) {
+        business = this.businessList.find(
+          (business: Business) => business.businessId === businessId
+        );
+      }
+      if (business) {
+        res(business);
+      } else {
+        business = await this.http.get(this.rootUrl + businessId).subscribe(
+          (data: Business) => {
+            res(data);
+          },
+          (err) => rej(err)
+        );
+      }
+    });
   }
 }

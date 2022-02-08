@@ -1,0 +1,33 @@
+<app-header title="dettagli business" [defaultHref]="backPath" [back]="true" [color]="'primary'">
+</app-header>
+<ion-content *ngIf="business" style="background-color: whitesmoke;">
+
+  <ion-card>
+
+    <div style="background-color: lightgrey;height: 40px;align-items: center; ">
+      <h5 style="margin-top: 0px; padding: 5px 5px 5px 5px;">Ora inizio: {{business.startTime | date:'shortTime'}}</h5>
+    </div>
+
+    <ion-card-content>
+      <ion-card-subtitle>
+        <ion-icon name="build" size="small" color="dark"></ion-icon> Job: {{business.jobDescription}}
+      </ion-card-subtitle>
+      <ion-card-subtitle>
+        <ion-icon name="person" size="small" color="dark"></ion-icon> Client : {{business.clientFullName}}
+      </ion-card-subtitle>
+      <ion-card-subtitle>
+        <ion-icon name="clipboard" size="small" color="dark"></ion-icon> notes:
+        {{business.note}}
+      </ion-card-subtitle>
+      <ion-card-subtitle>
+        <ion-icon name="location" size="small" color="dark"></ion-icon>position: {{business.position}}
+      </ion-card-subtitle>
+    </ion-card-content>
+
+    <div style="background-color: lightgrey;height: 40px;">
+      <h4 style="margin-top: 0px; padding: 5px 5px 5px 5px;">Ora fine: {{business.endTime | date:'shortTime'}}</h4>
+    </div>
+
+  </ion-card>
+
+</ion-content>

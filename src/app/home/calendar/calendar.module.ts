@@ -11,6 +11,7 @@ import { CalendarModule } from 'ion2-calendar';
 import { SharedComponentsModule } from 'src/app/shared/shared-components.module';
 import { DayComponent } from './day/day.component';
 import { AddBusinessComponent } from './add-business/add-business.component';
+import { BusinessDetailsComponent } from './day/business-details/business-details.component';
 
 @NgModule({
   imports: [
@@ -22,6 +23,11 @@ import { AddBusinessComponent } from './add-business/add-business.component';
     SharedComponentsModule,
     ReactiveFormsModule,
   ],
-  declarations: [CalendarPage, DayComponent, AddBusinessComponent],
+  declarations: [
+    CalendarPage,
+    DayComponent,
+    AddBusinessComponent,
+    BusinessDetailsComponent,
+  ],
 })
 export class CalendarPageModule {}

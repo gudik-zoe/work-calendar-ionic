@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
 import { AddModalComponent } from './add-modal/add-modal.component';
 import { SelectModalComponent } from './select-modal/select-modal.component';
+import { BusinessComponent } from './business/business.component';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { SelectModalComponent } from './select-modal/select-modal.component';
     DynamicFormComponent,
     AddModalComponent,
     SelectModalComponent,
+    BusinessComponent,
   ],
   imports: [CommonModule, IonicModule, FormsModule, ReactiveFormsModule],
   exports: [
@@ -20,6 +22,7 @@ import { SelectModalComponent } from './select-modal/select-modal.component';
     DynamicFormComponent,
     AddModalComponent,
     SelectModalComponent,
+    BusinessComponent,
   ],
 })
 export class SharedComponentsModule {}

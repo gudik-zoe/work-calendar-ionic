@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Client } from 'src/app/models/client';
 import { Job } from 'src/app/models/job';
@@ -14,6 +14,7 @@ export class SelectModalComponent implements OnInit {
   @Input() title: string;
   @Input() backPath: string;
   @Input() searchPlaceHolder: string;
+
   filteredItems: string[];
   searchText: string;
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IonItem, LoadingController, ModalController } from '@ionic/angular';
 import { format, parseISO } from 'date-fns';
 import { Business } from 'src/app/models/business';
@@ -30,7 +30,8 @@ export class DayComponent implements OnInit {
     private clientService: ClientService,
     private modalCtrl: ModalController,
     private businessService: BusinessService,
-    private loaderCtrl: LoadingController
+    private loaderCtrl: LoadingController,
+    private router: Router
   ) {}
   jobs: Job[];
   clients: Client[];
@@ -87,6 +88,7 @@ export class DayComponent implements OnInit {
       this.businessList = await this.businessService.getBusinessInDate(
         this.fullDate
       );
+      this.businessService.businessList = [...this.businessList.resultList];
     } catch (err) {
       this.utilityService.displayError(err);
     }
@@ -128,6 +130,12 @@ export class DayComponent implements OnInit {
         }
       });
   }
+
+  openBusinessdetails(businessId: number) {
+    console.log(businessId);
+    this.router.navigate(['/home/calendar/' + this.fullDate + '/', businessId]);
+  }
+
   private async createBusiness(businessForm) {
     let business = new Business();
     business.clientId = this.clients.find(

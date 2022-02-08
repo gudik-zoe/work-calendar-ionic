@@ -1,26 +1,25 @@
 <app-header [title]="clickedDate" [defaultHref]="'home/calendar'" [back]="true" *ngIf="clickedDate" [color]="'primary'"
   [rightButton]="true" [rightButtonIcon]="'add'" (rightButtonFunction)="openAddBusinessModal()">
 </app-header>
-<ion-content color="secondary">
+<ion-content color="secondary" class="ion-margin">
+
+
 
   <ion-grid *ngIf="businessList">
     <ion-row *ngFor="let business of businessList.resultList">
-
+      <!-- <app-business [business]="business" [backPath]="'home/calendar/'+fullDate"></app-business> -->
       <ion-col style="margin: 5px 0px 0px 5px;">
-        <small>dalle :{{business.startTime | date:'shortTime'}}</small>
-        <ion-item color="warning">
-          Job: {{business.jobDescription}}
-          client: {{business.clientFullName}}
-          <ion-icon slot="end" name="pencil" size="medium"></ion-icon>
-          <ion-icon slot="end" name="trash" size="medium"></ion-icon>
+        <ion-item class="header">dalle :{{business.startTime | date:'shortTime'}}</ion-item>
+        <ion-item color="medium" detail="true" (click)="openBusinessdetails(business.businessId)">
+          <div>
+            Job: {{business.jobDescription}}
+            client: {{business.clientFullName}}
+          </div>
         </ion-item>
-        <small>alle: {{business.endTime | date:'shortTime'}}</small>
-
+        <ion-item class="header" style="width: 100%;">alle: {{business.endTime | date:'shortTime'}}</ion-item>
       </ion-col>
-
-
-
     </ion-row>
+
   </ion-grid>
 
 </ion-content>

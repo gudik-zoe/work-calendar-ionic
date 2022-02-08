@@ -1,0 +1,14 @@
+<app-header title="dettagli business" [defaultHref]="backPath" [back]="true" [color]="'primary'">
+</app-header>
+<ion-content *ngIf="business">
+  <ion-card>
+    <ion-card-header>
+      <ion-title slot="start"> Job:{{business.jobDescription}} </ion-title>
+      <ion-title slot="end"> Cliente:{{business.clientFullName}} </ion-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>ora inizio</p>
+      <p>ora fine</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -23,11 +23,7 @@ import { SelectModalComponent } from 'src/app/shared/select-modal/select-modal.c
   styleUrls: ['./add-business.component.scss'],
 })
 export class AddBusinessComponent implements OnInit {
-  constructor(
-    private fb: FormBuilder,
-    private modalCtrl: ModalController,
-    private pickerController: PickerController
-  ) {}
+  constructor(private fb: FormBuilder, private modalCtrl: ModalController) {}
   @Input() clients: Client[];
   @Input() jobs: Job[];
   @Input() date: string;
@@ -56,7 +52,7 @@ export class AddBusinessComponent implements OnInit {
           searchPlaceHolder:
             data === 'client' ? 'cerca cliente' : 'cerca commessa',
         },
-        cssClass: 'my-class',
+        cssClass: 'small-modal',
       })
       .then((modalEL) => {
         modalEL.present();

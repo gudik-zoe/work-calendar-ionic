@@ -3,12 +3,12 @@
 
 <ion-content>
   <ion-grid *ngIf="clients">
-    <ion-row *ngFor="let client of clients">
+    <ion-row *ngFor="let client of clients | orderBy:'client.fullName'">
       <ion-col>
         <ion-list>
           <ion-item color="warning">
             <ion-icon name="person" size="large" color="dark"></ion-icon>
-            {{client.fullName}}
+            {{client.fullName }}
             <ion-icon slot="end" name="pencil" size="medium" (click)="editClient(client)"></ion-icon>
             <ion-icon slot="end" name="trash" size="medium" (click)="deleteClient(client)"></ion-icon>
           </ion-item>

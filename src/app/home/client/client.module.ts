@@ -8,6 +8,7 @@ import { ClientPageRoutingModule } from './client-routing.module';
 
 import { ClientPage } from './client.page';
 import { SharedComponentsModule } from 'src/app/shared/shared-components.module';
+import { OrderByPipe } from './order-by.pipe';
 
 @NgModule({
   imports: [
@@ -18,6 +19,6 @@ import { SharedComponentsModule } from 'src/app/shared/shared-components.module'
     ReactiveFormsModule,
     ClientPageRoutingModule,
   ],
-  declarations: [ClientPage],
+  declarations: [ClientPage, OrderByPipe],
 })
 export class ClientPageModule {}

@@ -1,25 +1,26 @@
-<ion-content>
+<ion-content *ngIf="dynamicForm && formFields">
   <form [formGroup]="dynamicForm">
     <ion-grid>
-      <ion-row>
+      <!-- <ion-list > -->
+      <ion-row *ngFor="let field of formFields">
         <ion-col>
-          <ion-list *ngFor="let field of formFields">
-            <ion-item>
-              <ion-label position="floating">{{field.fieldName}}</ion-label>
-              <ion-input [type]="field.type" [name]="field.fieldName" [placeholder]="field.placeHolder"
-                [formControlName]="field.fieldName">
-              </ion-input>
-            </ion-item>
+          <ion-item>
+            <ion-label position="floating">{{field.fieldName}}</ion-label>
+            <ion-input [type]="field.type" [name]="field.fieldName" [placeholder]="field.placeHolder"
+              [formControlName]="field.fieldName">
+            </ion-input>
             <small style="color: red;"
               *ngIf="dynamicForm.get(field.fieldName).errors?.required && dynamicForm.get(field.fieldName).touched ">
-              this field is required
+              <p>this field is required</p>
             </small>
-            <small style="color: red;" *ngIf="dynamicForm.get(field.fieldName).errors?.minLength ">
-              should be at least {{field.validators.minLength}} characters
+            <small style="color: red;"
+              *ngIf="dynamicForm.get(field.fieldName).errors?.minLength  && dynamicForm.get(field.fieldName).touched ">
+              <p>should be at least {{field.validators.minLength}} characters</p>
             </small>
-          </ion-list>
+          </ion-item>
         </ion-col>
       </ion-row>
+      <!-- </ion-list> -->
       <ion-row>
         <ion-col>
           <ion-button color="primary" (click)="submit()" type="button" [disabled]="!dynamicForm.valid">
