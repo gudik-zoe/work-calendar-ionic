@@ -28,6 +28,7 @@ export class ClientPage implements OnInit {
       type: 'string',
       initialValue: '',
       placeHolder: 'Mario Rossi',
+      items: [],
       validators: {
         required: true,
         minLength: 3,
@@ -35,8 +36,9 @@ export class ClientPage implements OnInit {
     },
     {
       fieldName: 'colore',
-      type: 'string',
+      type: 'select',
       initialValue: '',
+      items: ['red', 'blue', 'green', 'yellow'],
       placeHolder: '',
       validators: {
         required: false,
@@ -73,7 +75,13 @@ export class ClientPage implements OnInit {
       .then(async (result: any) => {
         if (result.role === 'confirm') {
           this.loaderCtrl.create().then(async (el) => {
-            this.addClient(new Client(result.data.formValue.clientName));
+            console.log(result.data.formValue.color);
+            this.addClient(
+              new Client(
+                result.data.formValue.clientName,
+                result.data.formValue.colore
+              )
+            );
           });
         }
       });

@@ -21,6 +21,7 @@ export class DynamicFormComponent implements OnInit {
   dynamicForm: FormGroup;
 
   submit() {
+    console.log(this.dynamicForm.value);
     this.submitForm.emit(this.dynamicForm.value);
   }
 

@@ -27,6 +27,7 @@ export class JobPage implements OnInit {
       type: 'string',
       initialValue: '',
       placeHolder: 'lavoro 1',
+      items: [],
       validators: {
         required: true,
         minLength: 5,

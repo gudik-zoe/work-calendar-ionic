@@ -2,7 +2,9 @@ export class Client {
   public id?: number;
   public fullName!: string;
   public timestamp: Date;
-  constructor(fullName: string) {
+  public color: string;
+  constructor(fullName: string, color: string) {
     this.fullName = fullName;
+    this.color = color;
   }
 }

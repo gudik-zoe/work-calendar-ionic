@@ -6,4 +6,5 @@ export class FormField {
   public placeHolder: string;
   public type: string;
   public validators: Validator;
+  public items: String[];
 }

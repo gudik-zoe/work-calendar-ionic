@@ -3,7 +3,7 @@
     <ion-grid>
       <!-- <ion-list > -->
       <ion-row *ngFor="let field of formFields">
-        <ion-col>
+        <ion-col *ngIf="field.type === 'string'">
           <ion-item>
             <ion-label position="floating">{{field.fieldName}}</ion-label>
             <ion-input [type]="field.type" [name]="field.fieldName" [placeholder]="field.placeHolder"
@@ -17,6 +17,15 @@
               *ngIf="dynamicForm.get(field.fieldName).errors?.minLength  && dynamicForm.get(field.fieldName).touched ">
               <p>should be at least {{field.validators.minLength}} characters</p>
             </small>
+          </ion-item>
+        </ion-col>
+        <ion-col *ngIf="field.type === 'select'">
+          <ion-item>
+            <ion-label position="floating">{{field.fieldName}}</ion-label>
+            <ion-select [formControlName]="field.fieldName" *ngIf="field.type === 'select' ">
+              <ion-select-option *ngFor="let item of field.items">{{item}}
+              </ion-select-option>
+            </ion-select>
           </ion-item>
         </ion-col>
       </ion-row>
