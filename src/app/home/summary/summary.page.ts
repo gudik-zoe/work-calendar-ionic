@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { format, parseISO } from 'date-fns';
+import { AlertButton } from 'src/app/models/AlertButton';
 import { Base64 } from 'src/app/models/base64';
 import { Client } from 'src/app/models/client';
 import { Job } from 'src/app/models/job';
 import { SummaryFilters } from 'src/app/models/summaryFilter';
+import { MonthUtility } from 'src/app/utility/monthUtility';
 import { UtilityService } from 'src/app/utility/utility.service';
 import { ClientService } from '../client/client.service';
 import { JobService } from '../job/job.service';
@@ -18,7 +20,7 @@ import { SummaryService } from './summary.service';
 export class SummaryPage implements OnInit {
   constructor(
     private summaryService: SummaryService,
-    private utilityService: UtilityService,
+    public utilityService: UtilityService,
     private clientService: ClientService,
     private jobService: JobService,
     private fb: FormBuilder
@@ -29,6 +31,8 @@ export class SummaryPage implements OnInit {
   startDate: any;
   endDate: any;
   base64: any;
+  months: string[];
+  month: string;
 
   private async getMyJobs() {
     try {
@@ -58,8 +62,9 @@ export class SummaryPage implements OnInit {
     this.summaryForm = this.fb.group({
       client: [''],
       job: [''],
-      startDate: [''],
-      endDate: [''],
+      // startDate: [''],
+      month: ['', Validators.required],
+      // endDate: [''],
     });
   }
 
@@ -71,22 +76,42 @@ export class SummaryPage implements OnInit {
           client.fullName.trim() == this.summaryForm.get('client').value.trim()
       ).id;
     }
-    summary.startDate = this.summaryForm.get('startDate').value;
-    summary.endDate = this.summaryForm.get('endDate').value;
+    if (this.summaryForm.value.job) {
+      summary.jobId = this.jobs.find(
+        (job) =>
+          job.description.trim() == this.summaryForm.get('job').value.trim()
+      ).id;
+    }
+    summary.startDate = null;
+    summary.endDate = null;
+    summary.month = this.summaryForm.get('month').value.trim();
     this.getSummary(summary);
   }
 
   async getSummary(summaryFilters) {
-    console.log(summaryFilters);
     try {
       const result = await this.summaryService.getBusinessSummary(
         summaryFilters
       );
-      this.base64 = { ...result };
+      result == null ? this.noDataAlert() : (this.base64 = { ...result });
     } catch (err) {
-      console.log(err);
       this.utilityService.displayError(err);
     }
+  }
+  noDataAlert() {
+    let buttonAndHandlers: AlertButton[] = [
+      { text: 'ok', handler: async () => {} },
+    ];
+    this.utilityService.dynamicAlert(
+      'No data',
+      'non ci sono business per il mese di ' +
+        this.summaryForm.get('month').value.trim(),
+      buttonAndHandlers
+    );
+  }
+
+  setMonthsArray() {
+    this.months = [...this.utilityService.monthsArray];
   }
 
   downloadPdf() {
@@ -99,10 +124,10 @@ export class SummaryPage implements OnInit {
     downloadLink.download = fileName;
     downloadLink.click();
   }
-
   ngOnInit() {
     this.fillForm();
     this.getClients();
     this.getMyJobs();
+    this.setMonthsArray();
   }
 }

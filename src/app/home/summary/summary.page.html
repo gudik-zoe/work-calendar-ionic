@@ -1,33 +1,40 @@
 <app-header [title]="'Riepilogo'" [defaultHref]="'home'" [back]="false" [color]="'primary'" [rightButton]="false"
   [rightButtonIcon]="''"></app-header>
 
-<ion-content>
-  <ion-header>
-    scegli i parametri a base dei cui vuoi avere il riepilogo
-  </ion-header>
-
+<ion-content color="secondary">
   <form [formGroup]="summaryForm">
-    <ion-item color="tertiary">
+    <ion-item>
       <ion-label>
-        <ion-icon name="person" color="light"></ion-icon>Client
+        <ion-icon name="person" color="dark"></ion-icon>Client
       </ion-label>
-      <ion-select formControlName="client">
+      <ion-select formControlName="client" mode="ios">
         <ion-select-option *ngFor="let client of clients">{{client.fullName}}
         </ion-select-option>
       </ion-select>
     </ion-item>
 
-    <ion-item color="tertiary">
+    <ion-item>
       <ion-label>
-        <ion-icon name="build" color="light"></ion-icon> Commessa
+        <ion-icon name="build" color="dark"></ion-icon> Commessa
       </ion-label>
-      <ion-select value="brown" formControlName="job">
+      <ion-select value="brown" formControlName="job" mode="ios">
         <ion-select-option *ngFor="let job of jobs">{{job.description}}</ion-select-option>
       </ion-select>
     </ion-item>
 
+    <ion-item *ngIf="months">
+      <ion-label>
+        <ion-icon name="calendar" color="dark"></ion-icon> Mese
+      </ion-label>
+      <ion-select value="brown" formControlName="month" mode="ios">
+        <ion-select-option *ngFor="let month of months" style="font-size: larger; font-weight: bold;">
+          {{month}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
 
-    <ion-item color="tertiary" button="true" id="open-initiationTime-input">
+
+    <!--  <ion-item color="tertiary" button="true" id="open-initiationTime-input">
       <ion-label>
         <ion-icon name="time" color="light"></ion-icon>dalla data
       </ion-label>
@@ -41,7 +48,7 @@
       </ion-popover>
     </ion-item>
 
-    <ion-item color="primary" button="true" id="open-endTime-input">
+  <ion-item color="primary" button="true" id="open-endTime-input">
       <ion-label>
         <ion-icon name="time" color="light"></ion-icon>alla data
       </ion-label>
@@ -53,18 +60,29 @@
           </ion-datetime>
         </ng-template>
       </ion-popover>
-    </ion-item>
+    </ion-item> -->
 
-    <ion-button color="primary" (click)="submit()" expand="block">cerca</ion-button>
+
+    <!-- <ion-item color="primary" button="true" id="open-month-input">
+      <ion-label>
+        <ion-icon name="time" color="light"></ion-icon>mese
+      </ion-label>
+      <ion-text slot="end" *ngIf="month">{{ month }}</ion-text>
+      <ion-popover trigger="open-month-input" show-backdrop="false">
+        <ng-template>
+          <ion-datetime mode="ios" presentation="month" #month locale="it-GB-u-hc-h23">
+          </ion-datetime>
+        </ng-template>
+      </ion-popover>
+    </ion-item> -->
+
+    <ion-button color="primary" (click)="submit()" expand="block" [disabled]="!summaryForm.valid">cerca</ion-button>
   </form>
 
   <div *ngIf="base64">
-    <ion-button (click)="downloadPdf()">scarica</ion-button>
+    <ion-button (click)="downloadPdf()" color="primary">scarica</ion-button>
   </div>
 
 
-  <div *ngIf="!base64">
-    non ci sono business per quella ricerca
-  </div>
 
 </ion-content>

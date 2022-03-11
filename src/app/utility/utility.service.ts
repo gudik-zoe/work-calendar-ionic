@@ -15,6 +15,21 @@ export class UtilityService {
   ) {}
   errorMessage: string;
 
+  public monthsArray = [
+    'Giennaio',
+    'Febbraio',
+    'Marzo',
+    'Aprile',
+    'Maggio',
+    'Giugno',
+    'luglio',
+    'Agosto',
+    'Settembre',
+    'Ottobre',
+    'Novembre',
+    'Dicembre',
+  ];
+
   openToaster(message: string, duration: number = 1000, position: any = 'top') {
     this.toastCtrl.create({ message, duration, position }).then((elem) => {
       elem.present();
