@@ -20,7 +20,7 @@ export class AddModalComponent implements OnInit {
       {
         formValue: data,
       },
-      this.header === 'Modifica Cliente' ? 'confirm-edit' : 'confirm-add'
+      this.header.includes('Modifica') ? 'confirm-edit' : 'confirm-add'
     );
   }
 

@@ -21,7 +21,6 @@ export class JobService {
     return this.http.delete(this.rootUrl + id).toPromise();
   }
   public editJob(newJob: Job) {
-    console.log(newJob);
     return this.http.put<Job>(this.rootUrl, newJob).toPromise();
   }
 }

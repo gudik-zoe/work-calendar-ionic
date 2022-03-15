@@ -1,5 +1,5 @@
 <app-header [title]="'Commesse'" [defaultHref]="'home'" [back]="false" [color]="'primary'" [rightButton]="true"
-  [rightButtonIcon]="'add'" (rightButtonFunction)="addJobModal()"></app-header>
+  [rightButtonIcon]="'add'" (rightButtonFunction)="prepareAddJob()"></app-header>
 
 <ion-content color="secondary">
   <ion-grid *ngIf="jobs">
@@ -7,20 +7,10 @@
       <ion-col>
         <ion-item color="medium">
           <ion-icon name="build-outline" size="large" color="dark"></ion-icon>
-          <ion-label *ngIf="editedJobId  !== job.id"> {{job.description}}</ion-label>
-          <ion-input type="string" *ngIf="editedJobId === job.id" [(ngModel)]="editedJobDescription"
-            [placeholder]="editedJobDescription" style="color: black; background-color: whitesmoke;border-radius: 8px;">
-          </ion-input>
-          <ion-icon slot="end" name="create-outline" size="medium" color="primary" (click)="editJob(job)"
-            *ngIf=" editedJobId !== job.id"></ion-icon>
-          <ion-icon slot="end" name="trash-outline" size="medium" color="danger" (click)="deleteJob(job)"
-            *ngIf=" editedJobId !== job.id"></ion-icon>
-          <ion-icon slot="end" name="checkmark-circle" size="medium" color="green" (click)="confirmEditJob(job)"
-            *ngIf="editedJobId === job.id ">
+          <ion-label> {{job.description}}</ion-label>
+          <ion-icon slot="end" name="create-outline" size="medium" color="primary" (click)="prepareEditJob(job)">
           </ion-icon>
-          <ion-icon slot="end" name="close-outline" size="medium" color="danger" (click)="cancel()"
-            *ngIf=" editedJobId === job.id ">
-          </ion-icon>
+          <ion-icon slot="end" name="trash-outline" size="medium" color="danger" (click)="deleteJob(job)"></ion-icon>
         </ion-item>
       </ion-col>
     </ion-row>

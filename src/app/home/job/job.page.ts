@@ -22,7 +22,6 @@ export class JobPage implements OnInit {
   public jobs: Job[];
   editedJobId: number;
   editedJobDescription: string;
-  editedJobIndex: number;
 
   addJobFormFields: FormField[] = [
     {
@@ -38,12 +37,12 @@ export class JobPage implements OnInit {
     },
   ];
 
-  async addJobModal() {
+  async openJobModal(header: string, content: FormField[]) {
     this.ModalCtrl.create({
       component: AddModalComponent,
       componentProps: {
-        header: 'aggiungi Commessa',
-        content: this.addJobFormFields,
+        header: header,
+        content: content,
       },
     })
       .then((modalEL) => {
@@ -51,22 +50,62 @@ export class JobPage implements OnInit {
         return modalEL.onDidDismiss();
       })
       .then(async (result: any) => {
-        if (result.role === 'confirm') {
-          this.loaderCtrl.create().then(async (el) => {
+        this.loaderCtrl.create().then(async (el) => {
+          if (result.role === 'confirm-add') {
             this.addJob(new Job(null, result.data.formValue.description));
-          });
-        }
+          } else if (result.role === 'confirm-edit') {
+            this.editJob(result.data.formValue);
+          }
+        });
       });
   }
 
   async addJob(job: Job) {
-    try {
-      const theNewJob = await this.jobService.addJob(job);
-      this.utilityService.openToaster('commessa aggiunta con sucesso');
-      this.jobs.push(theNewJob);
-    } catch (err) {
-      this.utilityService.displayError(err, 'error add client', '');
-    }
+    this.loaderCtrl.create().then(async (el) => {
+      el.present();
+      try {
+        const theNewJob = await this.jobService.addJob(job);
+        console.log(theNewJob);
+        this.utilityService.openToaster('commessa aggiunta con sucesso');
+        this.jobs.push(theNewJob);
+        el.dismiss();
+      } catch (err) {
+        el.dismiss();
+        this.utilityService.displayError(err, 'error add job', '');
+      }
+    });
+  }
+
+  async editJob(data) {
+    this.loaderCtrl.create().then(async (el) => {
+      el.present();
+      try {
+        const theUpdatedJob = await this.jobService.editJob(
+          new Job(this.editedJobId, data.description)
+        );
+        let index = this.jobs.findIndex((job) => job.id == this.editedJobId);
+        this.jobs[index] = theUpdatedJob;
+        this.editedJobId = null;
+        el.dismiss();
+        this.utilityService.openToaster('commessa modificata con sucesso');
+      } catch (err) {
+        el.dismiss();
+        this.utilityService.displayError(err, 'error editing job', '');
+      }
+    });
+  }
+
+  prepareEditJob(job: Job) {
+    let editJobFormFields: FormField[] = [...this.addJobFormFields];
+    editJobFormFields[0].initialValue = job.description;
+    this.editedJobId = job.id;
+    this.openJobModal('Modifica Commessa', editJobFormFields);
+  }
+
+  prepareAddJob() {
+    let addJobFormFields: FormField[] = [...this.addJobFormFields];
+    addJobFormFields[0].initialValue = null;
+    this.openJobModal('Aggiungi Commessa', addJobFormFields);
   }
 
   async getMyJobs() {
@@ -96,39 +135,13 @@ export class JobPage implements OnInit {
         if (deletedJob == null) {
           el.dismiss();
           this.jobs = this.jobs.filter((job) => job.id !== id);
-          this.utilityService.openToaster('job cancellato con sucesso');
+          this.utilityService.openToaster('commessa cancellata con sucesso');
         }
       } catch (err) {
         el.dismiss();
         this.utilityService.displayError(err, 'error deleting job', '');
       }
     });
-  }
-
-  editJob(job: Job) {
-    this.editedJobId = job.id;
-    this.editedJobDescription = job.description;
-    console.log(this.editedJobDescription);
-  }
-  cancel() {
-    this.editedJobId = null;
-  }
-  async confirmEditJob(job: Job) {
-    if (
-      this.editedJobDescription.trim() == '' ||
-      this.editedJobDescription.trim() == job.description
-    ) {
-      return;
-    }
-    const modifiedHob = new Job(job.id, this.editedJobDescription);
-    try {
-      const newJob = await this.jobService.editJob(modifiedHob);
-      job.description = newJob.description;
-      this.editedJobId = null;
-    } catch (err) {
-      this.utilityService.displayError(err, 'error editing job', '');
-      this.editedJobId = null;
-    }
   }
 
   ngOnInit() {
