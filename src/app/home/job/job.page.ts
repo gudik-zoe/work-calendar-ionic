@@ -20,6 +20,9 @@ export class JobPage implements OnInit {
     private utilityService: UtilityService
   ) {}
   public jobs: Job[];
+  editedJobId: number;
+  editedJobDescription: string;
+  editedJobIndex: number;
 
   addJobFormFields: FormField[] = [
     {
@@ -50,7 +53,7 @@ export class JobPage implements OnInit {
       .then(async (result: any) => {
         if (result.role === 'confirm') {
           this.loaderCtrl.create().then(async (el) => {
-            this.addJob(new Job(result.data.formValue.description));
+            this.addJob(new Job(null, result.data.formValue.description));
           });
         }
       });
@@ -103,14 +106,29 @@ export class JobPage implements OnInit {
   }
 
   editJob(job: Job) {
-    let buttonAndHandlers: AlertButton[] = [
-      { text: 'ok', handler: async () => console.log('this is edit job ') },
-    ];
-    this.utilityService.dynamicAlert(
-      'alert header in job',
-      'alert message in job',
-      buttonAndHandlers
-    );
+    this.editedJobId = job.id;
+    this.editedJobDescription = job.description;
+    console.log(this.editedJobDescription);
+  }
+  cancel() {
+    this.editedJobId = null;
+  }
+  async confirmEditJob(job: Job) {
+    if (
+      this.editedJobDescription.trim() == '' ||
+      this.editedJobDescription.trim() == job.description
+    ) {
+      return;
+    }
+    const modifiedHob = new Job(job.id, this.editedJobDescription);
+    try {
+      const newJob = await this.jobService.editJob(modifiedHob);
+      job.description = newJob.description;
+      this.editedJobId = null;
+    } catch (err) {
+      this.utilityService.displayError(err, 'error editing job', '');
+      this.editedJobId = null;
+    }
   }
 
   ngOnInit() {

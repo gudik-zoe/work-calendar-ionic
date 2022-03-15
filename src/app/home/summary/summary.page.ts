@@ -33,6 +33,7 @@ export class SummaryPage implements OnInit {
   base64: any;
   months: string[];
   month: string;
+  selectedClient;
 
   private async getMyJobs() {
     try {
@@ -62,8 +63,8 @@ export class SummaryPage implements OnInit {
     this.summaryForm = this.fb.group({
       client: [''],
       job: [''],
-      // startDate: [''],
       month: ['', Validators.required],
+      // startDate: [''],
       // endDate: [''],
     });
   }
@@ -124,6 +125,7 @@ export class SummaryPage implements OnInit {
     downloadLink.download = fileName;
     downloadLink.click();
   }
+
   ngOnInit() {
     this.fillForm();
     this.getClients();

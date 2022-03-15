@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LoadingController, ModalController } from '@ionic/angular';
+import { FileDetector } from 'protractor';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 import { AlertButton } from 'src/app/models/AlertButton';
 import { Client } from 'src/app/models/client';
 import { FormField } from 'src/app/models/formField';
@@ -21,6 +23,7 @@ export class ClientPage implements OnInit {
     private loaderCtrl: LoadingController
   ) {}
   loading: boolean = false;
+  editedClientId: number;
 
   addClientFormFields: FormField[] = [
     {
@@ -60,12 +63,12 @@ export class ClientPage implements OnInit {
     });
   }
 
-  async openAddClientModal() {
+  async openClientModal(header: string, content: FormField[]) {
     this.ModalCtrl.create({
       component: AddModalComponent,
       componentProps: {
-        header: 'aggiungi cliente',
-        content: this.addClientFormFields,
+        header: header,
+        content: content,
       },
     })
       .then((modalEL) => {
@@ -73,18 +76,35 @@ export class ClientPage implements OnInit {
         return modalEL.onDidDismiss();
       })
       .then(async (result: any) => {
-        if (result.role === 'confirm') {
-          this.loaderCtrl.create().then(async (el) => {
-            console.log(result.data.formValue.color);
+        this.loaderCtrl.create().then(async (el) => {
+          if (result.role === 'confirm-add') {
             this.addClient(
               new Client(
+                null,
                 result.data.formValue.clientName,
                 result.data.formValue.colore
               )
             );
-          });
-        }
+          } else if (result.role === 'confirm-edit') {
+            this.confirmEditClient(result.data.formValue);
+          }
+        });
       });
+  }
+
+  async confirmEditClient(data) {
+    try {
+      const updatedClient = await this.clientService.updateClient(
+        new Client(this.editedClientId, data.clientName, data.colore)
+      );
+      let index = this.clients.findIndex(
+        (client) => client.id == this.editedClientId
+      );
+      this.clients[index] = updatedClient;
+      this.editedClientId = null;
+    } catch (err) {
+      this.utilityService.displayError(err, 'error edit client', '');
+    }
   }
 
   async addClient(client: Client) {
@@ -117,7 +137,6 @@ export class ClientPage implements OnInit {
         this.clients = this.clients.filter((client) => client.id !== id);
         this.utilityService.openToaster('client cancellato con sucesso');
       } catch (err) {
-        console.log('arrived here');
         this.utilityService.displayError(err, 'error deleting client', '');
       } finally {
         el.dismiss();
@@ -126,14 +145,17 @@ export class ClientPage implements OnInit {
   }
 
   editClient(client: Client) {
-    let buttonAndHandlers: AlertButton[] = [
-      { text: 'ok', handler: async () => console.log('this is edit client ') },
-    ];
-    this.utilityService.dynamicAlert(
-      'alert header',
-      'alert message',
-      buttonAndHandlers
-    );
+    let editClientFormFields: FormField[] = [...this.addClientFormFields];
+    editClientFormFields[0].initialValue = client.fullName;
+    editClientFormFields[1].initialValue = client.color;
+    this.editedClientId = client.id;
+    this.openClientModal('Modifica Cliente', editClientFormFields);
+  }
+  prepareAddClient() {
+    let addClientFormFields: FormField[] = [...this.addClientFormFields];
+    addClientFormFields[0].initialValue = null;
+    addClientFormFields[1].initialValue = null;
+    this.openClientModal('Aggiungi Cliente', addClientFormFields);
   }
 
   ngOnInit() {

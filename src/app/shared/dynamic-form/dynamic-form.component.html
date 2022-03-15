@@ -28,12 +28,34 @@
             </ion-select>
           </ion-item>
         </ion-col>
+        <ion-col *ngIf="field.type === 'time'">
+          <ion-item button="true" [id]="field.fieldName">
+            <ion-label>
+              <ion-icon name="time" color="light"></ion-icon>{{field.fieldName}}
+            </ion-label>
+            <ion-text slot="end" *ngIf="startTime">{{ startTime }}</ion-text>
+            <ion-text slot="end" *ngIf="endTime">{{ endTime }}</ion-text>
+            <ion-popover [trigger]="field.fieldName" show-backdrop="false">
+              <ng-template *ngIf="field.fieldName === 'oraInizio'">
+                <ion-datetime mode="ios" #startTime presentation="time" cancelText="cancel" locale="en-GB-u-hc-h23"
+                  (ionChange)="formatDate(startTime.value)" [formControlName]="field.fieldName">
+                </ion-datetime>
+              </ng-template>
+              <ng-template *ngIf="field.fieldName === 'oraFine'">
+                <ion-datetime mode="ios" #endTime presentation="time" cancelText="cancel" locale="en-GB-u-hc-h23"
+                  (ionChange)="formatDate(endTime.value)" [formControlName]="field.fieldName">
+                </ion-datetime>
+              </ng-template>
+            </ion-popover>
+          </ion-item>
+        </ion-col>
+
       </ion-row>
       <!-- </ion-list> -->
       <ion-row>
         <ion-col>
           <ion-button color="primary" (click)="submit()" type="button" [disabled]="!dynamicForm.valid">
-            salva
+            {{header === 'Modifica Cliente'?'modifica' :'salva'}}
           </ion-button>
           <ion-button color="danger" (click)="close()" type="button">
             cancella

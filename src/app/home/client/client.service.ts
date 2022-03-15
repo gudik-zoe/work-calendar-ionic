@@ -17,6 +17,10 @@ export class ClientService {
     return this.http.post<Client>(this.rootUrl, client).toPromise();
   }
 
+  public updateClient(client: Client) {
+    return this.http.put<Client>(this.rootUrl, client).toPromise();
+  }
+
   public getClients() {
     return this.http.get<Client[]>(this.rootUrl).toPromise();
   }

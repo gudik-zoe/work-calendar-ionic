@@ -5,6 +5,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { format, parseISO } from 'date-fns';
 import { FormField } from 'src/app/models/formField';
 import { Validator } from 'src/app/models/validator';
 
@@ -15,16 +16,21 @@ import { Validator } from 'src/app/models/validator';
 })
 export class DynamicFormComponent implements OnInit {
   @Input() formFields: FormField[];
+  @Input() header: String;
   @Output() submitForm = new EventEmitter();
   @Output() closeForm = new EventEmitter();
   constructor() {}
   dynamicForm: FormGroup;
+  startTime;
+  endTime;
 
   submit() {
-    console.log(this.dynamicForm.value);
     this.submitForm.emit(this.dynamicForm.value);
   }
 
+  formatDate(data: string) {
+    return format(parseISO(data), 'HH:mm');
+  }
   close() {
     this.closeForm.emit(null);
   }

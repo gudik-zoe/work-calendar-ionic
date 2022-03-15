@@ -1,5 +1,6 @@
-<app-header [title]="header"> </app-header>
+<app-header [title]="header" [back]="false" [rightButton]="true" [color]="'primary'" [rightButtonIcon]="'close'"
+  (rightButtonFunction)="close()"> </app-header>
 <ion-content *ngIf="content">
-  <app-dynamic-form [formFields]="content" (submitForm)="save($event)" (closeForm)="close($event)">
+  <app-dynamic-form [formFields]="content" [header]="header" (submitForm)="save($event)" (closeForm)="close($event)">
   </app-dynamic-form>
 </ion-content>

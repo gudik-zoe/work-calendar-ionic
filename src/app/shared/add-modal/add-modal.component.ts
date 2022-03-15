@@ -20,11 +20,13 @@ export class AddModalComponent implements OnInit {
       {
         formValue: data,
       },
-      'confirm'
+      this.header === 'Modifica Cliente' ? 'confirm-edit' : 'confirm-add'
     );
   }
 
   close(data) {
+    this.header = null;
+    this.content = null;
     this.modalCtrl.dismiss();
   }
 
