@@ -1,5 +1,6 @@
 import {
   Component,
+  ErrorHandler,
   EventEmitter,
   Input,
   OnInit,
@@ -13,9 +14,13 @@ import {
   PickerOptions,
 } from '@ionic/angular';
 import { format, parseISO } from 'date-fns';
+import { AddBusiness } from 'src/app/models/addBusiness';
 import { Client } from 'src/app/models/client';
 import { Job } from 'src/app/models/job';
 import { SelectModalComponent } from 'src/app/shared/select-modal/select-modal.component';
+import { UtilityService } from 'src/app/utility/utility.service';
+import { ClientService } from '../../client/client.service';
+import { JobService } from '../../job/job.service';
 
 @Component({
   selector: 'app-add-business',
@@ -23,15 +28,25 @@ import { SelectModalComponent } from 'src/app/shared/select-modal/select-modal.c
   styleUrls: ['./add-business.component.scss'],
 })
 export class AddBusinessComponent implements OnInit {
-  constructor(private fb: FormBuilder, private modalCtrl: ModalController) {}
-  @Input() clients: Client[];
-  @Input() jobs: Job[];
-  @Input() date: string;
+  constructor(
+    private fb: FormBuilder,
+    private modalCtrl: ModalController,
+    private clientService: ClientService,
+    private JobsService: JobService,
+    private utilityService: UtilityService
+  ) {}
+  @Input() addBusinessFields: AddBusiness;
+  @Input() header: string;
+  clients: Client[];
+  jobs: Job[];
+  date: string;
   selectedClient: string;
   selectedJob: string;
   createBusinessForm: FormGroup;
   startTime: string;
   endTime: string;
+  startTimeParsedForBe: string;
+  endTimeParsedForBe: string;
   clientsByFullName: string[];
   clientExists: boolean = false;
 
@@ -60,12 +75,12 @@ export class AddBusinessComponent implements OnInit {
       })
       .then(async (result: any) => {
         if (result.role === 'confirm' && data === 'client') {
-          this.selectedClient = result.data.selectedValue;
+          this.addBusinessFields.client = result.data.selectedValue;
           this.createBusinessForm
             .get('client')
             .setValue(result.data.selectedValue);
         } else if (result.role === 'confirm' && data === 'job') {
-          this.selectedJob = result.data.selectedValue;
+          this.addBusinessFields.job = result.data.selectedValue;
           this.createBusinessForm
             .get('job')
             .setValue(result.data.selectedValue);
@@ -75,12 +90,13 @@ export class AddBusinessComponent implements OnInit {
 
   fillForm() {
     this.createBusinessForm = this.fb.group({
-      client: ['', [Validators.required]],
-      job: ['', [Validators.required]],
-      startTime: ['', [Validators.required]],
-      endTime: ['', [Validators.required]],
-      note: [''],
-      position: [''],
+      client: [this.addBusinessFields.client, [Validators.required]],
+      job: [this.addBusinessFields.job, [Validators.required]],
+      startTime: [this.addBusinessFields.startTime, [Validators.required]],
+      endTime: [this.addBusinessFields.endTime, [Validators.required]],
+      note: [this.addBusinessFields.note],
+      position: [this.addBusinessFields.position],
+      businessId: [this.addBusinessFields.businessId],
     });
   }
   submit() {
@@ -94,6 +110,7 @@ export class AddBusinessComponent implements OnInit {
       },
       'confirm'
     );
+    this.addBusinessFields = null;
   }
 
   cancel() {
@@ -101,45 +118,26 @@ export class AddBusinessComponent implements OnInit {
   }
 
   formatStartDate(data: string) {
-    this.startTime = format(parseISO(data), 'HH:mm');
+    this.startTime = data;
+    return format(parseISO(data), 'HH:mm');
   }
 
   formatEndDate(data: string) {
-    this.endTime = format(parseISO(data), 'HH:mm');
+    this.endTime = data;
+    return format(parseISO(data), 'HH:mm');
+  }
+  async getClientsAndJobs() {
+    try {
+      this.clients = await this.clientService.getClients();
+      this.jobs = await this.JobsService.getJobs();
+    } catch (err) {
+      this.utilityService.displayError(err);
+    }
   }
 
-  // async showPicker(client: string) {
-  //   let options: PickerOptions = {
-  //     keyboardClose: false,
-  //     buttons: [
-  //       {
-  //         text: 'Cancel',
-  //         role: 'cancel',
-  //       },
-  //       {
-  //         text: 'Ok',
-  //         handler: (value: any) => {
-  //           console.log(value);
-  //         },
-  //       },
-  //     ],
-  //     columns: [
-  //       {
-  //         name: 'clients',
-  //         options: [
-  //           {
-  //             text: client,
-  //             value: client,
-  //           },
-  //         ],
-  //       },
-  //     ],
-  //   };
-  //   let picker = await this.pickerController.create(options);
-  //   picker.present();
-  // }
-
   ngOnInit() {
+    this.getClientsAndJobs();
     this.fillForm();
+    console.log(this.addBusinessFields);
   }
 }

@@ -49,7 +49,7 @@ export class BusinessService {
           (business: Business) => business.businessId === businessId
         );
       }
-      if (business) {
+      if (false) {
         res(business);
       } else {
         business = await this.http.get(this.rootUrl + businessId).subscribe(
@@ -60,5 +60,11 @@ export class BusinessService {
         );
       }
     });
+  }
+
+  public editBusiness(business: Business) {
+    return this.http
+      .put<Business>(this.rootUrl + business.businessId, business)
+      .toPromise();
   }
 }

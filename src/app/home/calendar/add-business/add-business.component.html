@@ -1,4 +1,4 @@
-<app-header [title]="date" [rightButton]="true" [rightButtonIcon]="'close'" (rightButtonFunction)="cancel()"
+<app-header [title]="header" [rightButton]="true" [rightButtonIcon]="'close'" (rightButtonFunction)="cancel()"
   [color]="'primary'">
 </app-header>
 <ion-content color="secondary">
@@ -7,8 +7,8 @@
       <ion-label slot="start">
         <ion-icon name="person" color="light"></ion-icon> Client
       </ion-label>
-      <ion-label slot="end" *ngIf="selectedClient">
-        {{selectedClient}}
+      <ion-label slot="end" *ngIf="createBusinessForm.get('client').value">
+        {{createBusinessForm.get('client').value}}
         <ion-input formControlName="client" hidden> </ion-input>
       </ion-label>
     </ion-item>
@@ -19,8 +19,8 @@
       <ion-label slot="start">
         <ion-icon name="build" color="light"></ion-icon> Commessa
       </ion-label>
-      <ion-label slot="end" *ngIf="selectedJob">
-        {{selectedJob}}
+      <ion-label slot="end" *ngIf="createBusinessForm.get('job').value">
+        {{createBusinessForm.get('job').value}}
         <ion-input formControlName="job" hidden> </ion-input>
       </ion-label>
     </ion-item>
@@ -30,7 +30,8 @@
       <ion-label>
         <ion-icon name="time" color="light"></ion-icon>ora inizio
       </ion-label>
-      <ion-text slot="end" *ngIf="startTime">{{ startTime }}</ion-text>
+      <ion-text slot="end">{{
+        createBusinessForm.get('startTime').value |timeParser }}</ion-text>
       <ion-popover trigger="open-initiationTime-input" show-backdrop="false">
         <ng-template>
           <ion-datetime mode="ios" #startTime presentation="time" cancelText="cancel" locale="en-GB-u-hc-h23"
@@ -44,11 +45,12 @@
       <ion-label>
         <ion-icon name="time" color="light"></ion-icon>ora Fine
       </ion-label>
-      <ion-text slot="end" *ngIf="endTime">{{ endTime }}</ion-text>
+      <ion-text slot="end">{{ createBusinessForm.get('endTime').value |timeParser }}
+      </ion-text>
       <ion-popover trigger="open-endTime-input" show-backdrop="false">
         <ng-template>
-          <ion-datetime mode="ios" presentation="time" #endTime locale="it-GB-u-hc-h23"
-            (ionChange)="formatEndDate(endTime.value)" formControlName="endTime">
+          <ion-datetime mode="ios" presentation="time" #endTimeReference locale="it-GB-u-hc-h23"
+            (ionChange)="formatEndDate(endTimeReference.value)" formControlName="endTime">
           </ion-datetime>
         </ng-template>
       </ion-popover>
@@ -63,7 +65,7 @@
       <ion-textarea type="text" formControlName="position"></ion-textarea>
     </ion-item>
 
-    <ion-button color="primary" (click)="submit()" expand="block" [disabled]="!createBusinessForm.valid">Salva
+    <ion-button color="primary" (click)="submit()" expand="block">Salva
     </ion-button>
   </form>
 </ion-content>

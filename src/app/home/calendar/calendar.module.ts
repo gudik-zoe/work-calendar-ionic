@@ -12,6 +12,7 @@ import { SharedComponentsModule } from 'src/app/shared/shared-components.module'
 import { DayComponent } from './day/day.component';
 import { AddBusinessComponent } from './add-business/add-business.component';
 import { BusinessDetailsComponent } from './day/business-details/business-details.component';
+import { TimeParserPipe } from './time-parser.pipe';
 
 @NgModule({
   imports: [
@@ -24,6 +25,7 @@ import { BusinessDetailsComponent } from './day/business-details/business-detail
     ReactiveFormsModule,
   ],
   declarations: [
+    TimeParserPipe,
     CalendarPage,
     DayComponent,
     AddBusinessComponent,

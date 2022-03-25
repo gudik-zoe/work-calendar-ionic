@@ -1,25 +1,28 @@
 <app-header [title]="clickedDate" [defaultHref]="'home/calendar'" [back]="true" *ngIf="clickedDate" [color]="'primary'"
-  [rightButton]="true" [rightButtonIcon]="'add'" (rightButtonFunction)="openAddBusinessModal()">
+  [rightButton]="true" [rightButtonIcon]="'add'" (rightButtonFunction)="openAddEditBusinessModal(true , null)">
 </app-header>
-<ion-content color="secondary" class="ion-margin">
+<ion-content color="secondary" class="ion-margin" *ngIf="businessList">
 
 
 
-  <ion-grid *ngIf="businessList">
-    <ion-row *ngFor="let business of businessList.resultList">
-      <!-- <app-business [business]="business" [backPath]="'home/calendar/'+fullDate"></app-business> -->
-      <ion-col style="margin: 5px 0px 0px 5px;">
-        <ion-item class="header">dalle :{{business.startTime | date:'shortTime'}}</ion-item>
-        <ion-item color="medium" detail="true" (click)="openBusinessdetails(business.businessId)">
-          <div>
-            Job: {{business.jobDescription}}
-            client: {{business.clientFullName}}
-          </div>
-        </ion-item>
-        <ion-item class="header" style="width: 100%;">alle: {{business.endTime | date:'shortTime'}}</ion-item>
-      </ion-col>
-    </ion-row>
 
-  </ion-grid>
+  <ion-card *ngFor="let business of businessList.resultList">
+    <ion-col>
+
+      <ion-card-header color="primary">dalle :{{business.startTime | date:'shortTime'}}</ion-card-header>
+      <ion-card-content color="medium" detail="true" (click)="openBusinessdetails(business.businessId)">
+        <div>
+          Job: {{business.jobDescription}}
+          client: {{business.clientFullName}}
+        </div>
+      </ion-card-content>
+      <ion-card-header color="primary">alle: {{business.endTime | date:'shortTime'}}</ion-card-header>
+      <ion-card-subtitle>
+        <ion-icon name="create-outline" size="medium" color="dark" (click)="openAddEditBusinessModal(false , business)">
+        </ion-icon>
+      </ion-card-subtitle>
+    </ion-col>
+  </ion-card>
+
 
 </ion-content>
