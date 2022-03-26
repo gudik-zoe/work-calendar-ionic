@@ -11,12 +11,12 @@ import { AddModalComponent } from 'src/app/shared/add-modal/add-modal.component'
 import { UtilityService } from 'src/app/utility/utility.service';
 import { ClientService } from '../../client/client.service';
 import { JobService } from '../../job/job.service';
-import { AddBusinessComponent } from '../add-business/add-business.component';
+import { AddEditBusinessComponent } from '../add-edit-business/add-edit-business.component';
 import { SummaryService } from '../../summary/summary.service';
 import { BusinessService } from '../business.service';
 import { BusinessList } from 'src/app/models/businessList';
 import { formatDate } from '@angular/common';
-import { AddBusiness } from 'src/app/models/addBusiness';
+import { BusinessForm } from 'src/app/models/addBusiness';
 
 @Component({
   selector: 'app-day',
@@ -41,15 +41,6 @@ export class DayComponent implements OnInit {
   clickedDate: string;
   fullDate: string;
   businessList: BusinessList;
-  AddBusinessFields: AddBusiness = {
-    client: '',
-    job: '',
-    startTime: null,
-    endTime: null,
-    note: '',
-    position: '',
-  };
-
   private async getMyJobs() {
     try {
       this.jobs = await this.jobService.getJobs();
@@ -79,11 +70,11 @@ export class DayComponent implements OnInit {
 
   public openAddEditBusinessModal(addMode: boolean, business: Business) {
     let addEditObject = addMode
-      ? this.AddBusinessFields
+      ? new BusinessForm()
       : this.createEditBusinessObject(business);
     this.modalCtrl
       .create({
-        component: AddBusinessComponent,
+        component: AddEditBusinessComponent,
         componentProps: {
           header: addMode ? 'Aggiungi business' : 'Modifica business',
           addBusinessFields: addEditObject,
@@ -110,45 +101,24 @@ export class DayComponent implements OnInit {
   openBusinessdetails(businessId: number) {
     this.router.navigate(['/home/calendar/' + this.fullDate + '/', businessId]);
   }
-  formatStartDate(data: string) {
-    return format(parseISO(data), 'HH:mm');
-  }
 
-  formatEndDate(data: string) {
-    return format(parseISO(data), 'HH:mm');
-  }
-
-  createEditBusinessObject(business: Business) {
-    let businessToBeUpdated = new AddBusiness();
-    businessToBeUpdated.client = this.clients.find(
-      (client) => client.fullName === business.clientFullName.trim()
-    ).fullName;
-    businessToBeUpdated.job = this.jobs.find(
-      (job) => job.description === business.jobDescription.trim()
-    ).description;
-    businessToBeUpdated.startTime = business.startTime;
-    businessToBeUpdated.endTime = business.endTime;
-    businessToBeUpdated.note = business.note;
-    businessToBeUpdated.position = business.position;
+  createEditBusinessObject(business: Business): BusinessForm {
+    let businessToBeUpdated = new BusinessForm(
+      business.clientFullName,
+      business.jobDescription,
+      business.startTime,
+      business.endTime,
+      business.note,
+      business.position
+    );
     businessToBeUpdated.businessId = business.businessId;
     return businessToBeUpdated;
   }
 
-  async editBusiness(businessToBeUpdated) {
+  async editBusiness(businessToBeUpdated: BusinessForm) {
     try {
-      let business = new Business();
-      business.clientId = this.clients.find(
-        (client) => client.fullName.trim() == businessToBeUpdated.client.trim()
-      ).id;
-      business.jobId = this.jobs.find(
-        (job) => job.description == businessToBeUpdated.job
-      ).id;
-      business.date = this.fullDate;
-      business.startTime = businessToBeUpdated.startTime;
-      business.endTime = businessToBeUpdated.endTime;
-      business.businessId = businessToBeUpdated.businessId;
-      business.note = businessToBeUpdated.note;
-      business.position = businessToBeUpdated.position;
+      let business: Business =
+        this.mapBusinessFormToBusiness(businessToBeUpdated);
       const updatedBusiness = await this.businessService.editBusiness(business);
       let businessIndex = this.businessList.resultList.findIndex(
         (business) => business.businessId === businessToBeUpdated.businessId
@@ -160,7 +130,18 @@ export class DayComponent implements OnInit {
     }
   }
 
-  private async createBusiness(businessForm) {
+  private async createBusiness(businessForm: BusinessForm) {
+    const business: Business = this.mapBusinessFormToBusiness(businessForm);
+    try {
+      const newBusiness = await this.businessService.createBusiness(business);
+      this.businessList.resultList.push(newBusiness);
+      this.utilityService.openToaster('business aggiunto con sucesso');
+    } catch (err) {
+      this.utilityService.displayError(err);
+    }
+  }
+
+  private mapBusinessFormToBusiness(businessForm: BusinessForm): Business {
     let business = new Business();
     business.clientId = this.clients.find(
       (client) => client.fullName.trim() == businessForm.client.trim()
@@ -173,13 +154,10 @@ export class DayComponent implements OnInit {
     business.endTime = businessForm.endTime;
     business.note = businessForm.note;
     business.position = businessForm.position;
-    try {
-      const newBusiness = await this.businessService.createBusiness(business);
-      this.businessList.resultList.push(newBusiness);
-      this.utilityService.openToaster('business aggiunto con sucesso');
-    } catch (err) {
-      this.utilityService.displayError(err);
-    }
+    business.businessId = businessForm.businessId
+      ? businessForm.businessId
+      : null;
+    return business;
   }
 
   ngOnInit() {

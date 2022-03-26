@@ -10,9 +10,9 @@ import { CalendarPage } from './calendar.page';
 import { CalendarModule } from 'ion2-calendar';
 import { SharedComponentsModule } from 'src/app/shared/shared-components.module';
 import { DayComponent } from './day/day.component';
-import { AddBusinessComponent } from './add-business/add-business.component';
 import { BusinessDetailsComponent } from './day/business-details/business-details.component';
 import { TimeParserPipe } from './time-parser.pipe';
+import { AddEditBusinessComponent } from './add-edit-business/add-edit-business.component';
 
 @NgModule({
   imports: [
@@ -28,7 +28,7 @@ import { TimeParserPipe } from './time-parser.pipe';
     TimeParserPipe,
     CalendarPage,
     DayComponent,
-    AddBusinessComponent,
+    AddEditBusinessComponent,
     BusinessDetailsComponent,
   ],
 })

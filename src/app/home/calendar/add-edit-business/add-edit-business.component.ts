@@ -14,7 +14,7 @@ import {
   PickerOptions,
 } from '@ionic/angular';
 import { format, parseISO } from 'date-fns';
-import { AddBusiness } from 'src/app/models/addBusiness';
+import { BusinessForm } from 'src/app/models/addBusiness';
 import { Client } from 'src/app/models/client';
 import { Job } from 'src/app/models/job';
 import { SelectModalComponent } from 'src/app/shared/select-modal/select-modal.component';
@@ -23,11 +23,11 @@ import { ClientService } from '../../client/client.service';
 import { JobService } from '../../job/job.service';
 
 @Component({
-  selector: 'app-add-business',
-  templateUrl: './add-business.component.html',
-  styleUrls: ['./add-business.component.scss'],
+  selector: 'app-add-edit-business',
+  templateUrl: './add-edit-business.component.html',
+  styleUrls: ['./add-edit-business.component.scss'],
 })
-export class AddBusinessComponent implements OnInit {
+export class AddEditBusinessComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private modalCtrl: ModalController,
@@ -35,7 +35,7 @@ export class AddBusinessComponent implements OnInit {
     private JobsService: JobService,
     private utilityService: UtilityService
   ) {}
-  @Input() addBusinessFields: AddBusiness;
+  @Input() addBusinessFields: BusinessForm;
   @Input() header: string;
   clients: Client[];
   jobs: Job[];
