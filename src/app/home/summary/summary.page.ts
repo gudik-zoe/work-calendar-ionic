@@ -11,7 +11,12 @@ import { UtilityService } from 'src/app/utility/utility.service';
 import { ClientService } from '../client/client.service';
 import { JobService } from '../job/job.service';
 import { SummaryService } from './summary.service';
-
+import {
+  Downloader,
+  DownloadRequest,
+  NotificationVisibility,
+} from '@ionic-native/downloader/ngx';
+import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
 @Component({
   selector: 'app-summary',
   templateUrl: './summary.page.html',
@@ -23,7 +28,9 @@ export class SummaryPage implements OnInit {
     public utilityService: UtilityService,
     private clientService: ClientService,
     private jobService: JobService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private fileOpener: FileOpener,
+    private file: File
   ) {}
   summaryForm: FormGroup;
   clients: Client[];
@@ -115,7 +122,7 @@ export class SummaryPage implements OnInit {
     this.months = [...this.utilityService.monthsArray];
   }
 
-  downloadPdf() {
+  async downloadPdf() {
     const linkSource =
       'data:' + this.base64.fileType + ';base64,' + this.base64.fileInBase64;
     const downloadLink = document.createElement('a');
@@ -125,6 +132,67 @@ export class SummaryPage implements OnInit {
     downloadLink.download = fileName;
     downloadLink.click();
   }
+  //   var request: DownloadRequest = {
+  //     uri: YOUR_URI,
+  //     title: 'MyDownload',
+  //     description: '',
+  //     mimeType: '',
+  //     visibleInDownloadsUi: true,
+  //     notificationVisibility: NotificationVisibility.VisibleNotifyCompleted,
+  //     destinationInExternalFilesDir: {
+  //         dirType: 'Downloads',
+  //         subPath: 'MyFile.'
+  //     }
+  // };
+  //   this.downloader.download(request)
+  //   .then((location: string) => console.log('File downloaded at:'+location))
+  //   .catch((error: any) => console.error(error))
+
+  // window.location.href =
+  //   'data:application/xls;base64,' + this.base64.fileInBase64;
+
+  //   const writeDirectory = this.platform.is('ios')
+  //     ? this.file.dataDirectory
+  //     : this.file.externalDataDirectory;
+  //   this.file
+  //     .writeFile(
+  //       writeDirectory,
+  //       filename,
+  //       this.convertBase64ToBlob(
+  //         this.base64.fileInBase64,
+  //         'data:application/xls;base64'
+  //       ),
+  //       { replace: true }
+  //     )
+  //     .then(() => {
+  //       this.fileOpener
+  //         .open(writeDirectory + filename, 'application/xls')
+  //         .catch(() => {
+  //           console.log('Error opening pdf file');
+  //         });
+  //     })
+  //     .catch(() => {
+  //       console.error('Error writing pdf file');
+  //     });
+  // }
+  // convertBase64ToBlob(b64Data, contentType): Blob {
+  //   contentType = contentType || '';
+  //   const sliceSize = 512;
+  //   b64Data = b64Data.replace(/^[^,]+,/, '');
+  //   b64Data = b64Data.replace(/\s/g, '');
+  //   const byteCharacters = window.atob(b64Data);
+  //   const byteArrays = [];
+  //   for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+  //     const slice = byteCharacters.slice(offset, offset + sliceSize);
+  //     const byteNumbers = new Array(slice.length);
+  //     for (let i = 0; i < slice.length; i++) {
+  //       byteNumbers[i] = slice.charCodeAt(i);
+  //     }
+  //     const byteArray = new Uint8Array(byteNumbers);
+  //     byteArrays.push(byteArray);
+  //   }
+  //   return new Blob(byteArrays, { type: contentType });
+  // }
 
   ngOnInit() {
     this.fillForm();

@@ -109,11 +109,16 @@ export class JobPage implements OnInit {
   }
 
   async getMyJobs() {
-    try {
-      this.jobs = await this.jobService.getJobs();
-    } catch (err) {
-      this.utilityService.displayError(err, 'error fetching jobs', '');
-    }
+    this.loaderCtrl.create().then(async (el) => {
+      el.present();
+      try {
+        this.jobs = await this.jobService.getJobs();
+      } catch (err) {
+        this.utilityService.displayError(err, 'error fetching jobs', '');
+      } finally {
+        el.dismiss();
+      }
+    });
   }
   deleteJob(job: Job) {
     let buttonAndHandlers: AlertButton[] = [

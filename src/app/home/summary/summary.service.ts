@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class SummaryService {
-  rootUrl: string = environment.rootUrl + 'business/';
+  rootUrl: string = environment.rootUrlDev + 'business/';
   constructor(private http: HttpClient) {}
 
   public getBusinessSummary(filters: SummaryFilters) {

@@ -8,7 +8,6 @@
 
   <ion-card *ngFor="let business of businessList.resultList">
     <ion-col>
-
       <ion-card-header color="primary">dalle :{{business.startTime | date:'shortTime'}}</ion-card-header>
       <ion-card-content color="medium" detail="true" (click)="openBusinessdetails(business.businessId)">
         <div>

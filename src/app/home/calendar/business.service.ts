@@ -9,7 +9,7 @@ import { parseISO } from 'date-fns';
   providedIn: 'root',
 })
 export class BusinessService {
-  rootUrl: string = environment.rootUrl + 'business/';
+  rootUrl: string = environment.rootUrlDev + 'business/';
   constructor(private http: HttpClient) {}
   businessList: Business[];
 

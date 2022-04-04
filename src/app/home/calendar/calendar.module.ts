@@ -20,7 +20,7 @@ import { AddEditBusinessComponent } from './add-edit-business/add-edit-business.
     FormsModule,
     IonicModule,
     CalendarPageRoutingModule,
-    CalendarModule,
+    // CalendarModule,
     SharedComponentsModule,
     ReactiveFormsModule,
   ],

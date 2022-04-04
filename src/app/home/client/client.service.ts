@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 })
 export class ClientService {
   constructor(private http: HttpClient) {}
-  rootUrl: string = environment.rootUrl + 'client/';
+  rootUrl: string = environment.rootUrlDev + 'client/';
 
   public clients: Client[];
 

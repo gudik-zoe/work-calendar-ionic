@@ -3,7 +3,8 @@
 
 <ion-content>
 
-  <ion-datetime first-day-of-week="1" presentation="date" #date size="cover" (ionChange)="dateValue(date.value)">
+  <ion-datetime first-day-of-week="1" presentation="date" mode="android" [(ngModel)]="myDate" size="cover"
+    (ionChange)="dateValue()">
   </ion-datetime>
 
   <!-- <ion-item>

@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  rootUrl: 'http://localhost:8080/',
+  rootUrlProd: 'https://work-calendar-heroku.herokuapp.com/',
+  // rootUrlDev: 'http://localhost:8080/',
+  rootUrlDev: 'https://work-calendar-heroku.herokuapp.com/',
   production: false,
 };
 
