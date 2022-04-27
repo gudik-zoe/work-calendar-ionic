@@ -4,19 +4,11 @@
 <ion-content color="secondary">
   <form [formGroup]="summaryForm">
 
-    <!-- <ion-item color="medium" (click)="openSelectModal('client')">
-      <ion-label slot="start">
-        <ion-icon name="person" color="light"></ion-icon> Client
-      </ion-label>
-      <ion-label slot="end" *ngIf="selectedClient">
-        {{selectedClient}}
-        <ion-input formControlName="client" hidden mode="ios"> </ion-input>
-      </ion-label>
-    </ion-item> -->
+
 
 
     <ion-item color="medium">
-      <ion-label slot="start">
+      <ion-label>
         <ion-icon name="person-outline" color="light"></ion-icon> Client
       </ion-label>
       <ion-select value="brown" formControlName="client" mode="ios">
@@ -44,50 +36,8 @@
       </ion-select>
     </ion-item>
 
-
-    <!--  <ion-item color="tertiary" button="true" id="open-initiationTime-input">
-      <ion-label>
-        <ion-icon name="time" color="light"></ion-icon>dalla data
-      </ion-label>
-      <ion-text slot="end" *ngIf="startDate">{{ startDate }}</ion-text>
-      <ion-popover trigger="open-initiationTime-input" show-backdrop="false">
-        <ng-template>
-          <ion-datetime mode="ios" #startDate presentation="date" cancelText="cancel" locale="en-GB-u-hc-h23"
-            (ionChange)="formatStartDate(startDate.value)" formControlName="startDate">
-          </ion-datetime>
-        </ng-template>
-      </ion-popover>
-    </ion-item>
-
-  <ion-item color="primary" button="true" id="open-endTime-input">
-      <ion-label>
-        <ion-icon name="time" color="light"></ion-icon>alla data
-      </ion-label>
-      <ion-text slot="end" *ngIf="endDate">{{ endDate }}</ion-text>
-      <ion-popover trigger="open-endTime-input" show-backdrop="false">
-        <ng-template>
-          <ion-datetime mode="ios" presentation="date" #endDate locale="it-GB-u-hc-h23"
-            (ionChange)="formatEndDate(endDate.value)" formControlName="endDate">
-          </ion-datetime>
-        </ng-template>
-      </ion-popover>
-    </ion-item> -->
-
-
-    <!-- <ion-item color="primary" button="true" id="open-month-input">
-      <ion-label>
-        <ion-icon name="time" color="light"></ion-icon>mese
-      </ion-label>
-      <ion-text slot="end" *ngIf="month">{{ month }}</ion-text>
-      <ion-popover trigger="open-month-input" show-backdrop="false">
-        <ng-template>
-          <ion-datetime mode="ios" presentation="month" #month locale="it-GB-u-hc-h23">
-          </ion-datetime>
-        </ng-template>
-      </ion-popover>
-    </ion-item> -->
-
     <ion-button color="primary" (click)="submit()" expand="block" [disabled]="!summaryForm.valid">cerca</ion-button>
+
   </form>
 
   <div *ngIf="base64">

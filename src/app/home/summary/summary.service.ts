@@ -13,12 +13,8 @@ export class SummaryService {
 
   public getBusinessSummary(filters: SummaryFilters) {
     let queryParams = new HttpParams();
-    console.log(filters);
     for (let filter in filters) {
       if (filters[filter]) {
-        console.log(
-          'inserting filter ' + filter.toString() + ' ' + filters[filter]
-        );
         queryParams = queryParams.append(filter.toString(), filters[filter]);
       }
     }

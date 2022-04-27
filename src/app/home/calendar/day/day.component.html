@@ -6,13 +6,13 @@
 
 
 
-  <ion-card *ngFor="let business of businessList.resultList">
-    <ion-col>
+  <ion-card *ngFor="let business of this.businessList.resultList | orderByDate:'date'">
+    <!-- <ion-col>
       <ion-card-header color="primary">dalle :{{business.startTime | date:'shortTime'}}</ion-card-header>
       <ion-card-content color="medium" detail="true" (click)="openBusinessdetails(business.businessId)">
         <div>
-          Job: {{business.jobDescription}}
-          client: {{business.clientFullName}}
+          Commessa: {{business.jobDescription}}
+          Cliente: {{business.clientFullName}}
         </div>
       </ion-card-content>
       <ion-card-header color="primary">alle: {{business.endTime | date:'shortTime'}}</ion-card-header>
@@ -20,7 +20,37 @@
         <ion-icon name="create-outline" size="medium" color="dark" (click)="openAddEditBusinessModal(false , business)">
         </ion-icon>
       </ion-card-subtitle>
-    </ion-col>
+    </ion-col> -->
+    <ion-card-header style="display: flex; align-items: flex-start;" color="blue">
+      <ion-title>Ora inizio: {{business.startTime |
+        date:'shortTime'}}
+      </ion-title>
+      <ion-icon name="create-outline" size="medium" color="dark" (click)="openAddEditBusinessModal(false , business)">
+      </ion-icon>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-card-subtitle>
+        <ion-icon name="build-outline" size="medium" color="dark"></ion-icon> Job: {{business.jobDescription}}
+      </ion-card-subtitle>
+      <ion-card-subtitle>
+        <ion-icon name="person-outline" size="small" color="dark"></ion-icon> Client : {{business.clientFullName}}
+      </ion-card-subtitle>
+      <ion-card-subtitle>
+        <ion-icon name="clipboard-outline" size="small" color="dark"></ion-icon> notes:
+        {{business.note}}
+      </ion-card-subtitle>
+      <ion-card-subtitle>
+        <ion-icon name="location-outline" size="small" color="dark"></ion-icon>position: {{business.position}}
+      </ion-card-subtitle>
+    </ion-card-content>
+
+    <ion-card-header style="display: flex; align-items: flex-end;" color="blue">
+      <ion-title>Ora fine: {{business.endTime | date:'shortTime'}}
+      </ion-title>
+    </ion-card-header>
+    <ion-card-subtitle>
+
+    </ion-card-subtitle>
   </ion-card>
 
 

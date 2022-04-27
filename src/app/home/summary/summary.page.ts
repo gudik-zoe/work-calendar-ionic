@@ -11,12 +11,18 @@ import { UtilityService } from 'src/app/utility/utility.service';
 import { ClientService } from '../client/client.service';
 import { JobService } from '../job/job.service';
 import { SummaryService } from './summary.service';
+import { Plugins } from '@capacitor/core';
+import { FileOpener } from '@ionic-native/file-opener/ngx';
+import { HttpClient } from '@angular/common/http';
 import {
-  Downloader,
-  DownloadRequest,
-  NotificationVisibility,
-} from '@ionic-native/downloader/ngx';
-import { FileOpener } from '@awesome-cordova-plugins/file-opener/ngx';
+  Filesystem,
+  Directory,
+  Encoding,
+  FilesystemDirectory,
+} from '@capacitor/filesystem';
+import { LoadingController } from '@ionic/angular';
+// const { FileSystem } = Plugins;
+
 @Component({
   selector: 'app-summary',
   templateUrl: './summary.page.html',
@@ -29,8 +35,7 @@ export class SummaryPage implements OnInit {
     private clientService: ClientService,
     private jobService: JobService,
     private fb: FormBuilder,
-    private fileOpener: FileOpener,
-    private file: File
+    private loadingCtrl: LoadingController
   ) {}
   summaryForm: FormGroup;
   clients: Client[];
@@ -41,6 +46,12 @@ export class SummaryPage implements OnInit {
   months: string[];
   month: string;
   selectedClient;
+
+  FILES_MIME_TYPES = {
+    EXCEL_TYPE:
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8',
+    PDF_TYPE: 'application/pdf',
+  };
 
   private async getMyJobs() {
     try {
@@ -97,15 +108,67 @@ export class SummaryPage implements OnInit {
   }
 
   async getSummary(summaryFilters) {
+    this.loadingCtrl.create().then(async (el) => {
+      el.present();
+      try {
+        const result = await this.summaryService.getBusinessSummary(
+          summaryFilters
+        );
+        result == null ? this.noDataAlert() : (this.base64 = { ...result });
+        // this.writeSecretFile(this.base64);
+      } catch (err) {
+        this.utilityService.displayError(err);
+      } finally {
+        el.dismiss();
+      }
+    });
+  }
+
+  async readFilePath() {
     try {
-      const result = await this.summaryService.getBusinessSummary(
-        summaryFilters
-      );
-      result == null ? this.noDataAlert() : (this.base64 = { ...result });
+      const contents = await Filesystem.readFile({
+        path: 'summaryFile.xls',
+        directory: Directory.Documents,
+      });
+      console.log('content:', contents);
     } catch (err) {
-      this.utilityService.displayError(err);
+      console.log('error ' + err);
     }
   }
+
+  async writeSecretFile(base64: Base64) {
+    await Filesystem.writeFile({
+      path: base64.fileName + base64.fileType,
+      data: base64.fileInBase64,
+      directory: Directory.Documents,
+    }).then((data) => {
+      Filesystem.getUri({
+        path: base64.fileName + base64.fileType,
+        directory: Directory.Documents,
+      }).then((uri) => {
+        this.readFilePath();
+      });
+    });
+    //   this.readFilePath();
+    //   this.utilityService.openToaster('file saved successfuly');
+    // });
+    // .then((uri) => {
+    //   console.log('uri ' + uri);
+    //   this.fileOpener
+    //     .open(base64.fileName + base64.fileType, 'application/xls')
+    //     .then(() => {
+    //       console.log('file is open');
+    //     })
+    //     .catch((err) => {
+    //       console.log('errore ' + err);
+    //     });
+    // })
+    // .catch((err) => {
+    //   console.log(err);
+    //   this.utilityService.displayError(err);
+    // });
+  }
+
   noDataAlert() {
     let buttonAndHandlers: AlertButton[] = [
       { text: 'ok', handler: async () => {} },
@@ -123,76 +186,60 @@ export class SummaryPage implements OnInit {
   }
 
   async downloadPdf() {
+    //ORIGINAL
     const linkSource =
       'data:' + this.base64.fileType + ';base64,' + this.base64.fileInBase64;
     const downloadLink = document.createElement('a');
     const fileName = this.base64.fileName + this.base64.fileType;
-
     downloadLink.href = linkSource;
     downloadLink.download = fileName;
     downloadLink.click();
   }
-  //   var request: DownloadRequest = {
-  //     uri: YOUR_URI,
-  //     title: 'MyDownload',
-  //     description: '',
-  //     mimeType: '',
-  //     visibleInDownloadsUi: true,
-  //     notificationVisibility: NotificationVisibility.VisibleNotifyCompleted,
-  //     destinationInExternalFilesDir: {
-  //         dirType: 'Downloads',
-  //         subPath: 'MyFile.'
-  //     }
-  // };
-  //   this.downloader.download(request)
-  //   .then((location: string) => console.log('File downloaded at:'+location))
-  //   .catch((error: any) => console.error(error))
 
-  // window.location.href =
-  //   'data:application/xls;base64,' + this.base64.fileInBase64;
+  b64toBlob(b64Data, contentType, sliceSize) {
+    contentType = contentType;
+    sliceSize = sliceSize || 512;
 
-  //   const writeDirectory = this.platform.is('ios')
-  //     ? this.file.dataDirectory
-  //     : this.file.externalDataDirectory;
-  //   this.file
-  //     .writeFile(
-  //       writeDirectory,
-  //       filename,
-  //       this.convertBase64ToBlob(
-  //         this.base64.fileInBase64,
-  //         'data:application/xls;base64'
-  //       ),
-  //       { replace: true }
-  //     )
-  //     .then(() => {
-  //       this.fileOpener
-  //         .open(writeDirectory + filename, 'application/xls')
-  //         .catch(() => {
-  //           console.log('Error opening pdf file');
-  //         });
-  //     })
-  //     .catch(() => {
-  //       console.error('Error writing pdf file');
-  //     });
-  // }
-  // convertBase64ToBlob(b64Data, contentType): Blob {
-  //   contentType = contentType || '';
-  //   const sliceSize = 512;
-  //   b64Data = b64Data.replace(/^[^,]+,/, '');
-  //   b64Data = b64Data.replace(/\s/g, '');
-  //   const byteCharacters = window.atob(b64Data);
-  //   const byteArrays = [];
-  //   for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-  //     const slice = byteCharacters.slice(offset, offset + sliceSize);
-  //     const byteNumbers = new Array(slice.length);
-  //     for (let i = 0; i < slice.length; i++) {
-  //       byteNumbers[i] = slice.charCodeAt(i);
-  //     }
-  //     const byteArray = new Uint8Array(byteNumbers);
-  //     byteArrays.push(byteArray);
-  //   }
-  //   return new Blob(byteArrays, { type: contentType });
-  // }
+    var byteCharacters = atob(b64Data);
+    var byteArrays = [];
+
+    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+      var byteNumbers = new Array(slice.length);
+      for (var i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+
+      var byteArray = new Uint8Array(byteNumbers);
+
+      byteArrays.push(byteArray);
+    }
+
+    var blob = new Blob(byteArrays, { type: contentType });
+    return blob;
+  }
+
+  save(name, data, type, isBinary) {
+    if (isBinary) {
+      var bytes = new Array(data.length);
+      for (var i = 0; i < data.length; i++) {
+        bytes[i] = data.charCodeAt(i);
+      }
+      data = new Uint8Array(bytes);
+    }
+
+    var blob = new Blob([data], { type: type });
+    return blob;
+    //  let objectURL = window.URL.createObjectURL(blob);
+    //  let anchor = document.createElement('a');
+
+    //  anchor.href = objectURL;
+    //  anchor.download = name;
+    //  anchor.click();
+
+    //  URL.revokeObjectURL(objectURL);
+  }
 
   ngOnInit() {
     this.fillForm();

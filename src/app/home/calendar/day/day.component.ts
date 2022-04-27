@@ -56,16 +56,22 @@ export class DayComponent implements OnInit {
       this.utilityService.displayError(err, 'error fetching client', '');
     }
   }
-
+  businesses: Business[];
   private async getBusinessOnDate() {
-    try {
-      this.businessList = await this.businessService.getBusinessInDate(
-        this.fullDate
-      );
-      this.businessService.businessList = [...this.businessList.resultList];
-    } catch (err) {
-      this.utilityService.displayError(err);
-    }
+    this.loaderCtrl.create().then(async (el) => {
+      el.present();
+      try {
+        this.businessList = await this.businessService.getBusinessInDate(
+          this.fullDate
+        );
+        this.businessService.businessList = [...this.businessList.resultList];
+        this.businesses = [...this.businessList.resultList];
+      } catch (err) {
+        this.utilityService.displayError(err);
+      } finally {
+        el.dismiss();
+      }
+    });
   }
 
   public openAddEditBusinessModal(addMode: boolean, business: Business) {
