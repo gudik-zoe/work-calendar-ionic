@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { format, parseISO } from 'date-fns';
+import { AuthService } from 'src/app/auth/auth.service';
+import { User } from 'src/app/models/user';
 import { UtilityService } from 'src/app/utility/utility.service';
 
 @Component({
@@ -9,8 +11,13 @@ import { UtilityService } from 'src/app/utility/utility.service';
   styleUrls: ['./calendar.page.scss'],
 })
 export class CalendarPage implements OnInit {
-  constructor(private router: Router, private utilityService: UtilityService) {}
+  constructor(
+    private router: Router,
+    private utilityService: UtilityService,
+    private authService: AuthService
+  ) {}
   myDate: string;
+  loggedUser: User;
   dateValue() {
     if (this.myDate != null)
       this.router.navigate(['/home/calendar/', this.myDate]);
@@ -23,5 +30,11 @@ export class CalendarPage implements OnInit {
   ionViewDidEnter() {
     this.myDate = null;
   }
-  ngOnInit() {}
+
+  getUser() {
+    this.loggedUser = this.authService.getUser();
+  }
+  ngOnInit() {
+    this.getUser();
+  }
 }
