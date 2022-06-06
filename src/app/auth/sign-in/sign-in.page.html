@@ -1,6 +1,16 @@
 <app-header [title]="'Sign in'" [back]="false" [rightButton]="false" [color]="'primary'" [rightButtonIcon]="''"
   [showMenuBurger]="false">
 </app-header>
+
+<ion-segment (ionChange)="segmentChanged($event)">
+  <ion-segment-button value="signIn">
+    <ion-label>Sign in</ion-label>
+  </ion-segment-button>
+  <ion-segment-button value="signUp">
+    <ion-label>Sign up</ion-label>
+  </ion-segment-button>
+</ion-segment>
+
 <ion-content *ngIf="content">
   <form [formGroup]="signInForm">
     <ion-grid>
