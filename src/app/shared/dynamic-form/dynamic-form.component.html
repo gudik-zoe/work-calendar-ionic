@@ -10,7 +10,7 @@
               [formControlName]="field.fieldName">
             </ion-input>
             <small style="color: red;"
-              *ngIf="dynamicForm.get(field.fieldName).errors?.required && dynamicForm.get(field.fieldName).touched ">
+              *ngIf="dynamicForm.get(field.fieldName).touched && dynamicForm.get(field.fieldName).errors?.required   ">
               <p>this field is required</p>
             </small>
             <small style="color: red;"
@@ -22,7 +22,7 @@
         <ion-col *ngIf="field.type === 'select'">
           <ion-item>
             <ion-label position="floating">{{field.fieldName}}</ion-label>
-            <ion-select [formControlName]="field.fieldName" *ngIf="field.type === 'select' ">
+            <ion-select [formControlName]="field.fieldName">
               <ion-select-option *ngFor="let item of field.items">{{item}}
               </ion-select-option>
             </ion-select>
@@ -47,6 +47,31 @@
                 </ion-datetime>
               </ng-template>
             </ion-popover>
+          </ion-item>
+        </ion-col>
+        <ion-col *ngIf="field.type === 'password'">
+          <ion-item>
+            <ion-label position="floating">{{field.fieldName}}</ion-label>
+            <ion-input [type]="field.type" [name]="field.fieldName" [placeholder]="field.placeHolder"
+              [formControlName]="field.fieldName">
+            </ion-input>
+          </ion-item>
+        </ion-col>
+
+        <ion-col *ngIf="field.type === 'email'">
+          <ion-item>
+            <ion-label position="floating">{{field.fieldName}}</ion-label>
+            <ion-input [type]="field.type" [name]="field.fieldName" [placeholder]="field.placeHolder"
+              [formControlName]="field.fieldName">
+            </ion-input>
+            <small style="color: red;"
+              *ngIf="dynamicForm.get(field.fieldName).touched && dynamicForm.get(field.fieldName).errors?.required   ">
+              <p>this field is required</p>
+            </small>
+            <small style="color: red;"
+              *ngIf="dynamicForm.get(field.fieldName).touched && dynamicForm.get(field.fieldName).errors?.email   ">
+              <p>this enter a valid email</p>
+            </small>
           </ion-item>
         </ion-col>
 

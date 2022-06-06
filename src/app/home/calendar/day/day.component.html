@@ -1,5 +1,6 @@
 <app-header [title]="clickedDate" [defaultHref]="'home/calendar'" [back]="true" *ngIf="clickedDate" [color]="'primary'"
-  [rightButton]="true" [rightButtonIcon]="'add'" (rightButtonFunction)="openAddEditBusinessModal(true , null)">
+  [rightButton]="true" [rightButtonIcon]="'add'" (rightButtonFunction)="openAddEditBusinessModal(true , null)"
+  [showMenuBurger]="false">
 </app-header>
 <ion-content color="secondary" class="ion-margin" *ngIf="businessList">
 

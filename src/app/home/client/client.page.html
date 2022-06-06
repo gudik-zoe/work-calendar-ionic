@@ -1,5 +1,5 @@
 <app-header [title]="'Clienti'" [defaultHref]="'home'" [back]="false" [color]="'primary'" [rightButton]="true"
-  [rightButtonIcon]="'add'" (rightButtonFunction)="prepareAddClient()"></app-header>
+  [rightButtonIcon]="'add'" (rightButtonFunction)="prepareAddClient()" [showMenuBurger]="true"></app-header>
 
 <ion-content>
   <ion-grid *ngIf="clients">

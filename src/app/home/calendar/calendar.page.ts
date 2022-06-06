@@ -17,7 +17,6 @@ export class CalendarPage implements OnInit {
     private authService: AuthService
   ) {}
   myDate: string;
-  loggedUser: User;
   dateValue() {
     if (this.myDate != null)
       this.router.navigate(['/home/calendar/', this.myDate]);
@@ -31,10 +30,5 @@ export class CalendarPage implements OnInit {
     this.myDate = null;
   }
 
-  getUser() {
-    this.loggedUser = this.authService.getUser();
-  }
-  ngOnInit() {
-    this.getUser();
-  }
+  ngOnInit() {}
 }

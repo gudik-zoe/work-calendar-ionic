@@ -38,6 +38,7 @@ export class DynamicFormComponent implements OnInit {
   toFormGroup() {
     let formGroup = {};
     for (let field of this.formFields) {
+      console.log(field);
       formGroup[field.fieldName] = new FormControl(field.initialValue, [
         field.validators.required
           ? Validators.required

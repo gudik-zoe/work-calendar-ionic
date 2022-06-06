@@ -1,3 +1,22 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-menu side="start">
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title *ngIf="loggedUser">{{loggedUser.fullName}}</ion-title>
+        <ion-icon size="large" name="person-circle-outline" *ngIf="loggedUser"></ion-icon>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-menu-toggle>
+          <ion-item lines="none" button (click)="logout()">
+            <ion-icon name="exit" slot="start">
+            </ion-icon>
+            <ion-label>logout</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+  <ion-router-outlet main></ion-router-outlet>
 </ion-app>

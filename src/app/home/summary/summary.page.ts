@@ -14,12 +14,7 @@ import { SummaryService } from './summary.service';
 import { Plugins } from '@capacitor/core';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { HttpClient } from '@angular/common/http';
-import {
-  Filesystem,
-  Directory,
-  Encoding,
-  FilesystemDirectory,
-} from '@capacitor/filesystem';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { LoadingController } from '@ionic/angular';
 // const { FileSystem } = Plugins;
 
@@ -47,11 +42,11 @@ export class SummaryPage implements OnInit {
   month: string;
   selectedClient;
 
-  FILES_MIME_TYPES = {
-    EXCEL_TYPE:
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8',
-    PDF_TYPE: 'application/pdf',
-  };
+  // FILES_MIME_TYPES = {
+  //   EXCEL_TYPE:
+  //     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8',
+  //   PDF_TYPE: 'application/pdf',
+  // };
 
   private async getMyJobs() {
     try {
@@ -107,7 +102,7 @@ export class SummaryPage implements OnInit {
     this.getSummary(summary);
   }
 
-  async getSummary(summaryFilters) {
+  getSummary(summaryFilters) {
     this.loadingCtrl.create().then(async (el) => {
       el.present();
       try {
@@ -115,8 +110,10 @@ export class SummaryPage implements OnInit {
           summaryFilters
         );
         result == null ? this.noDataAlert() : (this.base64 = { ...result });
-        // this.writeSecretFile(this.base64);
+        console.log('going to wrtie file');
+        // this.weila(this.base64);
       } catch (err) {
+        console.log(err);
         this.utilityService.displayError(err);
       } finally {
         el.dismiss();
@@ -136,18 +133,54 @@ export class SummaryPage implements OnInit {
     }
   }
 
-  async writeSecretFile(base64: Base64) {
-    await Filesystem.writeFile({
+  weila(base64: Base64) {
+    Filesystem.writeFile({
+      path: base64.fileName + base64.fileType,
+      data: base64.fileInBase64,
+      directory: Directory.Documents,
+      encoding: Encoding.UTF8,
+      recursive: true,
+    })
+      .then((data) => {
+        console.log(data);
+        Filesystem.getUri({
+          path: base64.fileName + base64.fileType,
+          directory: Directory.Documents,
+        })
+          .then((uri) => {
+            const file = uri.uri;
+            console.log(uri.uri);
+            this.readFilePath();
+            this.utilityService.openToaster('file saved successfuly');
+          })
+          .catch((err) => {
+            console.log('uri ' + err);
+          });
+      })
+      .catch((err) => {
+        console.log('file write ' + err);
+      });
+  }
+
+  writeSecretFile(base64: Base64) {
+    Filesystem.writeFile({
       path: base64.fileName + base64.fileType,
       data: base64.fileInBase64,
       directory: Directory.Documents,
     }).then((data) => {
+      console.log(data);
       Filesystem.getUri({
         path: base64.fileName + base64.fileType,
         directory: Directory.Documents,
-      }).then((uri) => {
-        this.readFilePath();
-      });
+      })
+        .then((uri) => {
+          console.log(uri.uri);
+          this.readFilePath();
+          this.utilityService.openToaster('file saved successfuly');
+        })
+        .catch((err) => {
+          this.utilityService.displayError(err);
+        });
     });
     //   this.readFilePath();
     //   this.utilityService.openToaster('file saved successfuly');
@@ -186,6 +219,7 @@ export class SummaryPage implements OnInit {
   }
 
   async downloadPdf() {
+    // this.writeSecretFile(this.base64);
     //ORIGINAL
     const linkSource =
       'data:' + this.base64.fileType + ';base64,' + this.base64.fileInBase64;

@@ -1,10 +1,9 @@
 <app-header [title]="'Calendario'" [defaultHref]="'home'" [back]="false" [color]="'primary'" [rightButton]="false"
-  [rightButtonIcon]=""></app-header>
+  [rightButtonIcon]="" [showMenuBurger]="true"></app-header>
 
 <ion-content>
 
-  <ion-datetime first-day-of-week="1" presentation="date" mode="ios" [(ngModel)]="myDate" size="cover"
-    (ionChange)="dateValue()">
+  <ion-datetime first-day-of-week="1" presentation="date" [(ngModel)]="myDate" size="cover" (ionChange)="dateValue()">
   </ion-datetime>
 
   <!-- <ion-item>

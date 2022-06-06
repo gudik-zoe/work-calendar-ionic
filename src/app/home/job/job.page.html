@@ -1,5 +1,5 @@
 <app-header [title]="'Commesse'" [defaultHref]="'home'" [back]="false" [color]="'primary'" [rightButton]="true"
-  [rightButtonIcon]="'add'" (rightButtonFunction)="prepareAddJob()"></app-header>
+  [rightButtonIcon]="'add'" (rightButtonFunction)="prepareAddJob()" [showMenuBurger]="true"></app-header>
 
 <ion-content color="secondary">
   <ion-grid *ngIf="jobs">

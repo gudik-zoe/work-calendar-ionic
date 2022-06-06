@@ -42,6 +42,7 @@ export class UtilityService {
     route: string = '',
     text: string = 'ok'
   ) {
+    console.log(error);
     if (error.status === 422 && error.error.data) {
       for (let message of error.error.data) {
         this.errorMessage += message + '\n';

@@ -8,6 +8,7 @@ const routes: Routes = [
   {
     path: '',
     component: HomePage,
+    // canActivate: [AuthGuard],
     children: [
       {
         path: 'calendar',
@@ -15,21 +16,25 @@ const routes: Routes = [
           import('./calendar/calendar.module').then(
             (m) => m.CalendarPageModule
           ),
+        //  canActivate: [AuthGuard],
       },
       {
         path: 'job',
         loadChildren: () =>
           import('./job/job.module').then((m) => m.JobPageModule),
+        // canActivate: [AuthGuard],
       },
       {
         path: 'client',
         loadChildren: () =>
           import('./client/client.module').then((m) => m.ClientPageModule),
+        //  canActivate: [AuthGuard],
       },
       {
         path: 'summary',
         loadChildren: () =>
           import('./summary/summary.module').then((m) => m.SummaryPageModule),
+        //  canActivate: [AuthGuard],
       },
       {
         path: 'sms',
