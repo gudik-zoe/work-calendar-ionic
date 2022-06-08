@@ -1,0 +1,62 @@
+<form [formGroup]="signUpForm" *ngIf="signUp">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">Nome e Cognome</ion-label>
+          <ion-input type="string" placeholder="Mario rossi" formControlName="fullName">
+          </ion-input>
+          <small style="color: red;"
+            *ngIf="signUpForm.get('fullName').touched && signUpForm.get('fullName').errors?.required ">
+            <p>this field is required</p>
+          </small>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Email</ion-label>
+          <ion-input type="email" placeholder="Mario.rossi@gmail.com" formControlName="email">
+          </ion-input>
+          <small style="color: red;"
+            *ngIf="signUpForm.get('email').touched && signUpForm.get('email').errors?.required ">
+            <p>this field is required</p>
+          </small>
+          <small style="color: red;" *ngIf="signUpForm.get('email').touched && signUpForm.get('email').errors?.email ">
+            <p>enter a valid email</p>
+          </small>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">Password</ion-label>
+          <ion-input type="password" formControlName="password">
+          </ion-input>
+          <small style="color: red;"
+            *ngIf=" signUpForm.get('password').errors?.required && signUpForm.get('password').touched  ">
+            <p>la password è un campo essenziale</p>
+          </small>
+          <small style="color: red;"
+            *ngIf=" signUpForm.get('password').errors?.minLength && signUpForm.get('password').touched  ">
+            <p>la password deve essere di 8 charatteri o di piu</p>
+          </small>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">Confirm Password</ion-label>
+          <ion-input type="password" formControlName="confirmPassword">
+          </ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button color="primary" expand="block" (click)="signUp()" type="button" [disabled]="!signUpForm.valid">
+          Sign up
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</form>

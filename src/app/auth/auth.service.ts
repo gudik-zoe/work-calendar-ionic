@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { LoginResponse } from '../models/loginResponse';
+import { SignUpDto } from '../models/signUpDtp';
 import { User } from '../models/user';
 import { UtilityService } from '../utility/utility.service';
 
@@ -22,10 +23,8 @@ export class AuthService {
       if (!!this.loggedUser) {
         res(this.loggedUser);
       }
-      console.log('doing the chiamata');
       this.http.get<User>(this.rootUrl + 'userData').subscribe(
         (user) => {
-          console.log(user);
           if (user) {
             res(user);
           }
@@ -43,7 +42,7 @@ export class AuthService {
       .toPromise();
   }
 
-  public signUp(user: any) {
+  public signUp(user: SignUpDto) {
     return this.http.post(this.rootUrl, user).toPromise();
   }
 }

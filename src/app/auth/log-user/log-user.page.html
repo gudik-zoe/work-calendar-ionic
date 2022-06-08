@@ -1,0 +1,17 @@
+<app-header [title]="'log-utente'" [back]="false" [rightButton]="false" [color]="'primary'" [rightButtonIcon]="''"
+  [showMenuBurger]="false">
+</app-header>
+
+<ion-segment (ionChange)="segmentChanged($event)" value="signIn">
+  <ion-segment-button value="signIn">
+    <ion-label>Sign in</ion-label>
+  </ion-segment-button>
+  <ion-segment-button value="signUp">
+    <ion-label>Sign up</ion-label>
+  </ion-segment-button>
+</ion-segment>
+
+<ion-content>
+  <app-sign-in *ngIf="signIn"></app-sign-in>
+  <app-sign-up *ngIf="!signIn" (goToSignIn)="goToSignIn($event)"></app-sign-up>
+</ion-content>

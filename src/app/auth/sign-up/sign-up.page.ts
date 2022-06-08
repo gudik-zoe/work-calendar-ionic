@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { UtilityService } from 'src/app/utility/utility.service';
 import { AuthService } from '../auth.service';
 
@@ -10,8 +12,12 @@ import { AuthService } from '../auth.service';
 export class SignUpPage implements OnInit {
   constructor(
     private authService: AuthService,
-    private utilityServic: UtilityService
+    private utilityServic: UtilityService,
+    private fb: FormBuilder,
+    private router: Router
   ) {}
+
+  signUpForm: FormGroup;
   async signUp() {
     const signUpDto = {
       fullName: 'fullUser',
@@ -27,5 +33,20 @@ export class SignUpPage implements OnInit {
     }
   }
 
-  ngOnInit() {}
+  fillSignUpForm() {
+    this.signUpForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]],
+      confirmPassword: ['', [Validators.required]],
+    });
+  }
+  segmentChanged(data) {
+    if (data.detail.value == 'signIn') {
+      this.router.navigate(['/sign-in']);
+    }
+  }
+
+  ngOnInit() {
+    this.fillSignUpForm();
+  }
 }

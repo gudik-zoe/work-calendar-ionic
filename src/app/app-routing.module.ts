@@ -11,20 +11,27 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'sign-in',
+    redirectTo: 'log-user',
     pathMatch: 'full',
   },
+  // {
+  //   path: 'sign-in',
+  //   loadChildren: () =>
+  //     import('./auth/sign-in/sign-in.module').then((m) => m.SignInPageModule),
+  //   // canActivate: [AuthGuard],
+  // },
+  // {
+  //   path: 'sign-up',
+  //   loadChildren: () =>
+  //     import('./auth/sign-up/sign-up.module').then((m) => m.SignUpPageModule),
+  //   // canActivate: [AuthGuard],
+  // },
   {
-    path: 'sign-in',
+    path: 'log-user',
     loadChildren: () =>
-      import('./auth/sign-in/sign-in.module').then((m) => m.SignInPageModule),
-    // canActivate: [AuthGuard],
-  },
-  {
-    path: 'sign-up',
-    loadChildren: () =>
-      import('./auth/sign-up/sign-up.module').then((m) => m.SignUpPageModule),
-    // canActivate: [AuthGuard],
+      import('./auth/log-user/log-user.module').then(
+        (m) => m.LogUserPageModule
+      ),
   },
 ];
 

@@ -2,17 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
-import { FormField } from 'src/app/models/formField';
 import { LoginResponse } from 'src/app/models/loginResponse';
 import { UtilityService } from 'src/app/utility/utility.service';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-sign-in',
-  templateUrl: './sign-in.page.html',
-  styleUrls: ['./sign-in.page.scss'],
+  templateUrl: './sign-in.component.html',
+  styleUrls: ['./sign-in.component.scss'],
 })
-export class SignInPage implements OnInit {
+export class SignInComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private utilityservice: UtilityService,
@@ -22,34 +21,7 @@ export class SignInPage implements OnInit {
   ) {}
 
   signInForm: FormGroup;
-  signUpForm: FormGroup;
-  signIn: boolean = true;
-  content: FormField[] = [
-    {
-      fieldName: 'email',
-      type: 'email',
-      initialValue: '',
-      placeHolder: 'Mario.Rossi@mail.com',
-      items: [],
-      validators: {
-        required: true,
-        minLength: 3,
-      },
-    },
-    {
-      fieldName: 'password',
-      type: 'password',
-      initialValue: '',
-      items: [],
-      placeHolder: '',
-      validators: {
-        required: true,
-        minLength: 1,
-      },
-    },
-  ];
   loginRes: LoginResponse;
-
   login() {
     if (!this.signInForm.valid) {
       return;
@@ -86,23 +58,7 @@ export class SignInPage implements OnInit {
     });
   }
 
-  segmentChanged(data) {
-    if (data.detail.value == 'signUp') {
-      this.signIn = false;
-    } else {
-      this.signIn = true;
-    }
-  }
-  fillSignUpForm() {
-    this.signUpForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
-      confirmPassword: ['', [Validators.required]],
-    });
-  }
-
   ngOnInit() {
     this.toFormGroup();
-    this.fillSignUpForm();
   }
 }

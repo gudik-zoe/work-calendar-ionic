@@ -1,0 +1,36 @@
+<form [formGroup]="signInForm">
+  <ion-grid>
+    <ion-row>
+      <ion-col style="width: 100%">
+        <ion-item>
+          <ion-label position="floating">Email</ion-label>
+          <ion-input type="email" placeholder="Mario rossi" formControlName="email">
+          </ion-input>
+          <small style="color: red;"
+            *ngIf="signInForm.get('email').touched && signInForm.get('email').errors?.required ">
+            <p>this field is required</p>
+          </small>
+          <small style="color: red;" *ngIf="signInForm.get('email').touched && signInForm.get('email').errors?.email ">
+            <p>enter a valid email</p>
+          </small>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">Password</ion-label>
+          <ion-input type="password" formControlName="password">
+          </ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button color="primary" expand="block" (click)="login()" type="button" [disabled]="!signInForm.valid">
+          Login
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</form>
