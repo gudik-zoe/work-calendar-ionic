@@ -39,7 +39,7 @@ export class UtilityService {
   displayError(
     error: HttpErrorResponse,
     header: string = '',
-    route: string = '',
+    route: string = 'home/calendar',
     text: string = 'ok'
   ) {
     console.log(error);

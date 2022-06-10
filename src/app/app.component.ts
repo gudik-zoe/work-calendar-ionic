@@ -22,7 +22,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   logout() {
     localStorage.removeItem('token');
-    this.router.navigate(['/sign-in']);
+    this.router.navigate(['/log-user']);
   }
 
   getUser() {
