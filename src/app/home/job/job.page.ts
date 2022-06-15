@@ -113,6 +113,7 @@ export class JobPage implements OnInit {
       el.present();
       try {
         this.jobs = await this.jobService.getJobs();
+        console.log(this.jobs);
       } catch (err) {
         this.utilityService.displayError(err, 'error fetching jobs', '');
       } finally {

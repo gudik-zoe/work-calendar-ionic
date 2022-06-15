@@ -16,6 +16,7 @@ import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { HttpClient } from '@angular/common/http';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { LoadingController } from '@ionic/angular';
+import { BusinessSummaryResponse } from 'src/app/models/businessSummaryResponse';
 // const { FileSystem } = Plugins;
 
 @Component({
@@ -101,17 +102,36 @@ export class SummaryPage implements OnInit {
     summary.month = this.summaryForm.get('month').value.trim();
     this.getSummary(summary);
   }
+  // for base 64 API
+  // getSummary(summaryFilters) {
+  //   this.loadingCtrl.create().then(async (el) => {
+  //     el.present();
+  //     try {
+  //       const result = await this.summaryService.getBusinessSummary(
+  //         summaryFilters
+  //       );
+  //       result == null ? this.noDataAlert() : (this.base64 = { ...result });
+  //     } catch (err) {
+  //       console.log(err);
+  //       this.utilityService.displayError(err);
+  //     } finally {
+  //       el.dismiss();
+  //     }
+  //   });
+  // }
 
+  // for get excel by mail API
   getSummary(summaryFilters) {
     this.loadingCtrl.create().then(async (el) => {
       el.present();
       try {
-        const result = await this.summaryService.getBusinessSummary(
+        let result = await this.summaryService.getBusinessSummary(
           summaryFilters
         );
-        result == null ? this.noDataAlert() : (this.base64 = { ...result });
-        console.log('going to wrtie file');
-        // this.weila(this.base64);
+        // let alertButton: AlertButton[] = [
+        //   { text: 'ok', handler: async () => {} },
+        // ];
+        this.utilityService.dynamicAlert(null, result.message, null);
       } catch (err) {
         console.log(err);
         this.utilityService.displayError(err);

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { SummaryFilters } from 'src/app/models/summaryFilter';
 import { Business } from 'src/app/models/business';
 import { environment } from 'src/environments/environment';
+import { BusinessSummaryResponse } from 'src/app/models/businessSummaryResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,9 @@ export class SummaryService {
       }
     }
     return this.http
-      .get(this.rootUrl + 'summary', { params: queryParams })
+      .get<BusinessSummaryResponse>(this.rootUrl + 'summary', {
+        params: queryParams,
+      })
       .toPromise();
   }
 }

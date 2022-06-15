@@ -70,9 +70,16 @@ export class UtilityService {
 
   dynamicAlert(header: string, message: string, buttons: AlertButton[]) {
     let buttonsArray = [];
-    buttons.forEach((button) =>
-      buttonsArray.push({ text: button.text, handler: () => button.handler() })
-    );
+    if (buttons == null) {
+      buttonsArray.push({ text: 'ok', handler: async () => {} });
+    } else {
+      buttons.forEach((button) =>
+        buttonsArray.push({
+          text: button.text,
+          handler: () => button.handler(),
+        })
+      );
+    }
     this.alertController
       .create({ header, message, buttons: buttonsArray })
       .then((alertEl) => {
