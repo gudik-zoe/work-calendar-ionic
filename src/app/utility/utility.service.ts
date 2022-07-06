@@ -1,3 +1,6 @@
+/* eslint-disable object-shorthand */
+/* eslint-disable prefer-const */
+/* eslint-disable @typescript-eslint/member-ordering */
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
@@ -22,7 +25,7 @@ export class UtilityService {
     'Aprile',
     'Maggio',
     'Giugno',
-    'luglio',
+    'Luglio',
     'Agosto',
     'Settembre',
     'Ottobre',
@@ -38,7 +41,38 @@ export class UtilityService {
 
   displayError(
     error: HttpErrorResponse,
-    header: string = '',
+    header: string = 'errore',
+    text: string = 'ok'
+  ) {
+
+    if (error.status === 422 && error.error.data) {
+      for (let message of error.error.data) {
+        this.errorMessage += message + '\n';
+      }
+    } else {
+      this.errorMessage = error.error.message;
+    }
+    this.alertController
+      .create({
+        header: header,
+        message: this.errorMessage,
+        buttons: [
+          {
+            text,
+            handler: () => {
+             console.log(error.status)
+                     },
+          },
+        ],
+      })
+      .then((alertEl) => {
+        alertEl.present();
+      });
+  }
+
+  displayErrorWithRoute(
+    error: HttpErrorResponse,
+    header: string = 'error',
     route: string = 'home/calendar',
     text: string = 'ok'
   ) {

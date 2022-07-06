@@ -1,3 +1,7 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable prefer-const */
+/* eslint-disable no-var */
+/* eslint-disable @typescript-eslint/member-ordering */
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { format, parseISO } from 'date-fns';
@@ -254,6 +258,7 @@ export class SummaryPage implements OnInit {
     contentType = contentType;
     sliceSize = sliceSize || 512;
 
+    // eslint-disable-next-line no-var
     var byteCharacters = atob(b64Data);
     var byteArrays = [];
 

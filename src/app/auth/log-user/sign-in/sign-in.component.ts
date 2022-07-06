@@ -40,7 +40,7 @@ export class SignInComponent implements OnInit {
           this.authService.userIsLogged.next(true);
         }
       } catch (err) {
-        this.utilityservice.displayError(err);
+        this.utilityservice.displayError(err, 'error', '/log-user');
       } finally {
         element.dismiss();
       }

@@ -6,11 +6,10 @@
           <ion-label position="floating">Email</ion-label>
           <ion-input type="email" placeholder="Mario rossi" formControlName="email">
           </ion-input>
-          <small style="color: red;"
-            *ngIf="signInForm.get('email').touched && signInForm.get('email').errors?.required ">
+          <small style="color: red;" *ngIf="signInForm.get('email').dirty && signInForm.get('email').errors?.required ">
             <p>this field is required</p>
           </small>
-          <small style="color: red;" *ngIf="signInForm.get('email').touched && signInForm.get('email').errors?.email ">
+          <small style="color: red;" *ngIf="signInForm.get('email').dirty && signInForm.get('email').errors?.email ">
             <p>enter a valid email</p>
           </small>
         </ion-item>

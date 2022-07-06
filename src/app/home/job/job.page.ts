@@ -145,7 +145,7 @@ export class JobPage implements OnInit {
         }
       } catch (err) {
         el.dismiss();
-        this.utilityService.displayError(err, 'error deleting job', '');
+        this.utilityService.displayError(err, 'error deleting job');
       }
     });
   }

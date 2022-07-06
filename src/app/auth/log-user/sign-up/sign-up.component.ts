@@ -40,7 +40,7 @@ export class SignUpComponent implements OnInit {
           this.goToSignIn.emit(true);
         }
       } catch (err) {
-        this.utilityServic.displayError(err);
+        this.utilityServic.displayError(err, 'error', '/log-user');
       } finally {
         element.dismiss();
       }

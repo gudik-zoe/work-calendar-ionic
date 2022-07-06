@@ -4,8 +4,8 @@
 
 export const environment = {
   // rootUrlProd: 'https://work-calendar-heroku.herokuapp.com/',
-  rootUrlDev: 'http://localhost:8080/',
-  // rootUrlDev: 'https://work-calendar-heroku.herokuapp.com/',
+ //  rootUrlDev: 'http://localhost:8080/',
+    rootUrlDev: 'https://work-calendar-heroku.herokuapp.com/',
   production: false,
 };
 
