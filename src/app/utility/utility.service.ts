@@ -60,8 +60,8 @@ export class UtilityService {
           {
             text,
             handler: () => {
-             console.log(error.status)
-                     },
+            return null
+          },
           },
         ],
       })
@@ -77,7 +77,7 @@ export class UtilityService {
     text: string = 'ok'
   ) {
     console.log(error);
-    if (error.status === 422 && error.error.data) {
+if (error.status === 422 && error.error.data) {
       for (let message of error.error.data) {
         this.errorMessage += message + '\n';
       }
